@@ -1,6 +1,6 @@
 {
   "name": "use-upbit-api",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "This is React Custom Hook for upbit api",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -13,12 +13,20 @@
   },
   "keywords": [
     "upbit",
+    "blockchain",
+    "realtime",
+    "stock",
+    "data",
     "api",
     "react",
     "custom-hook",
     "custom",
     "websocket",
-    "restapi"
+    "restapi",
+    "업비트",
+    "코인",
+    "블록체인",
+    "실시간시세"
   ],
   "dependencies": {
     "@types/node": "^18.6.4",
@@ -30,7 +38,7 @@
   "devDependencies": {
     "typescript": "^4.7.4"
   },
-  "author": "MinHyeok Kang <rkdalsgur032@gmail.com>",
+  "author": "MinHyeok Kang <rkdalsgur032@unist.ac.kr>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/devKangMinHyeok/use-upbit-api/issues"

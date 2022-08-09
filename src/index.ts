@@ -15,7 +15,7 @@ const socketDataEncoder = (socketData: any) => {
 
     return data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -27,7 +27,7 @@ const typeChecker = (type: string) => {
     }
     return isValid;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -53,7 +53,7 @@ const getLastBuffers = (buffer: any, maxNumResult: number) => {
 
     return result;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -71,7 +71,7 @@ const sortBuffers = (originalBuffers: any, sortOrder: ImarketCodes[]) => {
     }
     return result;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -100,7 +100,7 @@ const updateSocketData = (origininalData: any, newData: any) => {
     }
     return copyOriginal;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -112,7 +112,7 @@ const updateQueueBuffer = (buffer: any, maxSize: number) => {
     }
     return copyBuffer;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -146,7 +146,7 @@ export function useUpbitWebSocket(
             break;
 
           case "orderbook":
-            setSocketData(lastBuffers);
+            if (lastBuffers) setSocketData(lastBuffers[0]);
             buffer.current = [];
             break;
 
@@ -173,7 +173,7 @@ export function useUpbitWebSocket(
     try {
       const isTypeValid = typeChecker(type);
       if (!isTypeValid) {
-        console.log(
+        console.error(
           "[Error] | input type is unknown. (input type should be 'ticker' or 'orderbook' or 'trade')"
         );
         throw new Error();
@@ -181,7 +181,7 @@ export function useUpbitWebSocket(
 
       if (type === "orderbook" || type === "trade") {
         if (targetMarketCodes.length > 1) {
-          console.log(
+          console.error(
             "[Error] | 'Length' of Target Market Codes should be only 'one' in 'orderbook' and 'trade'. you can request only 1 marketcode's data, when you want to get 'orderbook' or 'trade' data."
           );
           throw new Error();
@@ -217,7 +217,7 @@ export function useUpbitWebSocket(
         };
 
         const socketErrorHandler = (error: any) => {
-          console.log("[Error]", error);
+          console.error("[Error]", error);
         };
 
         const socketMessageHandler = (evt: MessageEvent) => {

@@ -1,6 +1,6 @@
 {
   "name": "use-upbit-api",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "This is React Custom Hook for upbit api",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

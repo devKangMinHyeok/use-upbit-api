@@ -117,8 +117,14 @@ const updateQueueBuffer = (buffer: any, maxSize: number) => {
 };
 
 export function useUpbitWebSocket(
-  targetMarketCodes: ImarketCodes[],
-  type: string,
+  targetMarketCodes: ImarketCodes[] = [
+    {
+      market: "KRW-BTC",
+      korean_name: "비트코인",
+      english_name: "Bitcoin",
+    },
+  ],
+  type: string = "ticker",
   options = { throttle_time: 400, max_length_queue: 100 }
 ) {
   const SOCKET_URL: string = "wss://api.upbit.com/websocket/v1";

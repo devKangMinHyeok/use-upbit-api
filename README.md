@@ -1,4 +1,4 @@
-# use-upbit-api v1.0.5
+# use-upbit-api v1.0.6
 
 **The use-upbit-api custom hook for Upbit API** (Korea crypto exchange). In the previous, Upbit API's Websocket usage in React is difficult for developer who is unfamiliar with websocket in React, but this React Custom Hook solve the problem. Let's use this awesome custom hooks!
 
@@ -23,10 +23,10 @@
 const { isLoading, marketCodes } = useFetchMarketCode();
 ```
 
-| Return      | Description                         | Type        | Format                                                                                |
-| ----------- | ----------------------------------- | ----------- | ------------------------------------------------------------------------------------- |
-| isLoading   | State of fetching market codes data | Boolean     | true : Loading </br> false : Done                                                     |
-| marketCodes | All market codes of Upbit           | ObjectArray | { </br>market: string,</br> korean_name: string, </br> english_name: string</br>} [ ] |
+| Return      | Description                         | Type        | Format                                                                                  |
+| ----------- | ----------------------------------- | ----------- | --------------------------------------------------------------------------------------- |
+| isLoading   | State of fetching market codes data | Boolean     | `true : Loading`, <br> `false : Done`                                                   |
+| marketCodes | All market codes of Upbit           | ObjectArray | { <br>`market: string`,<br> `korean_name: string`, <br> `english_name: string`<br>} [ ] |
 
 ### useUpbitWebSocket
 
@@ -38,17 +38,17 @@ const { socket, isConnected, socketData } = useUpbitWebSocket(
 );
 ```
 
-| Argument              | Description                                                                                                               | Type        | Format                                                                                                                                                                                                                                                        |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **targetMarketCodes** | Targeted market codes to Websocket API                                                                                    | ObjectArray | { </br>market: string,</br> korean_name: string, </br> english_name: string</br>} [ ]                                                                                                                                                                         |
-| **type**              | Websocket Connection Type                                                                                                 | String      | "ticker" </br>"orderbook" </br> "trade" </br> </br><span style="color:red">\* Strictly above one of the three types above</span>                                                                                                                              |
-| **option**            | throttle_time : period of updating socketData </br> max_length_queue : In "trade" type, max length of trade history queue | Object      | { </br> throttle_time: number,</br> max_length_queue: number </br> } </br></br> <span style="color:red">\* Too Low throttle_time (less than 400ms) may cause unexpectable bug. </br></br> \* Too Large max_length_queue can make too large memory use.</span> |
+| Argument              | Description                                                                                                              | Type        | Format                                                                                                                                                                                                                        | Default                                                                      |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------ | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | --- |
+| **targetMarketCodes** | Targeted market codes to Websocket API                                                                                   | ObjectArray | { `market: string`, `korean_name: string`, `english_name: string`} [ ] <br><br> - targetMarketCodes **should be strictly Object Array**, **not Object** .                                                                     | `[ {market: "KRW-BTC", korean_name: "비트코인", english_name: "Bitcoin" } ]` |
+| **type**              | Websocket Connection Type                                                                                                | String      | `"ticker"` <br>`"orderbook"` <br> `"trade"` <br> <br>**- Strictly above one of the three types above**                                                                                                                        | `"ticker"`                                                                   |     |
+| **option**            | throttle_time : period of updating socketData <br> max_length_queue : In "trade" type, max length of trade history queue | Object      | { <br> `throttle_time: number`,<br> `max_length_queue: number` <br> } <br><br> **- Too Low throttle_time (less than 400ms) may cause unexpectable bug. <br><br> - Too Large max_length_queue can make too large memory use.** | `{ throttle_time: 400, max_length_queue: 100 }`                              |
 
-| Return          | Description                                            | Type             | Format                                      |
-| --------------- | ------------------------------------------------------ | ---------------- | ------------------------------------------- |
-| **socket**      | WebSocket object which is created by useUpbitWebSocket | WebSocket object |                                             |
-| **isConnected** | State of Websocket Connection                          | Boolean          | true : Connected </br> false : NonConnected |
-| **socketData**  | recieved data from upbit websocket server              | ObjectArray      |                                             |
+| Return          | Description                                            | Type             | Format                                             |
+| --------------- | ------------------------------------------------------ | ---------------- | -------------------------------------------------- |
+| **socket**      | WebSocket object which is created by useUpbitWebSocket | WebSocket object |                                                    |
+| **isConnected** | State of Websocket Connection                          | Boolean          | - `true : Connected` <br> - `false : NonConnected` |
+| **socketData**  | recieved data from upbit websocket server              | ObjectArray      |                                                    |
 
 ## Usage
 

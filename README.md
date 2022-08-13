@@ -1,4 +1,4 @@
-# use-upbit-api v1.1.2
+# use-upbit-api v1.1.3
 
 **The use-upbit-api custom hook for Upbit API** (Korea crypto exchange). In the previous, Upbit API's Websocket usage in React is difficult for developer who is unfamiliar with websocket in React, but this React Custom Hook solve the problem. Let's use this awesome custom hooks!
 

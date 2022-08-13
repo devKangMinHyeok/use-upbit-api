@@ -1,6 +1,6 @@
 {
   "name": "use-upbit-api",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "This is React Custom Hook for upbit api",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -28,14 +28,16 @@
     "블록체인",
     "실시간시세"
   ],
-  "dependencies": {
-    "@types/node": "^18.6.4",
-    "@types/react": "^18.0.15",
-    "@types/react-dom": "^18.0.6",
+  "peerDependencies": {
     "lodash": "^4.17.21",
-    "@types/lodash": "^4.14.182"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.182",
+    "@types/node": "^18.6.4",
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
     "typescript": "^4.7.4"
   },
   "author": "MinHyeok Kang <rkdalsgur032@unist.ac.kr>",

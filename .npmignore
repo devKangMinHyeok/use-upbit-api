@@ -1,5 +1,6 @@
 /src
 /node_modules
+/ts-develop
 tsconfig.json
 .gitignore
 .gitmessage.txt

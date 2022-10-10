@@ -258,6 +258,41 @@ function App() {
 export default App;
 ```
 
+## typescript Support
+
+**ticker API**
+
+```tsx
+import { TickerInterface, useUpbitWebSocket } from "use-upbit-api";
+
+const { socket, isConnected, socketData }: TickerInterface = useUpbitWebSocket(
+  targetMarketCodes,
+  "ticker",
+  option
+);
+```
+
+**orderbook API**
+
+```tsx
+import { OrderbookInterface, useUpbitWebSocket } from "use-upbit-api";
+
+const { socket, isConnected, socketData }: OrderbookInterface =
+  useUpbitWebSocket(targetMarketCodes, "orderbook", option);
+```
+
+**trade API**
+
+```tsx
+import { TradeInterface, useUpbitWebSocket } from "use-upbit-api";
+
+const { socket, isConnected, socketData }: TradeInterface = useUpbitWebSocket(
+  targetMarketCodes,
+  "trade",
+  option
+);
+```
+
 ## Contributing
 
 If you want to contribute to `use-upbit-api`, please contact me <rkdalsgur032@unist.ac.kr>

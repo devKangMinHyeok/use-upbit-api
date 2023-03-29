@@ -24,7 +24,7 @@
 ### useFetchMarketCode
 
 ```jsx
-const { isLoading, marketCodes } = useFetchMarketCode();
+const {isLoading, marketCodes} = useFetchMarketCode();
 ```
 
 | Return      | Description                         | Type        | Format                                                                                  |
@@ -35,10 +35,10 @@ const { isLoading, marketCodes } = useFetchMarketCode();
 ### useUpbitWebSocket
 
 ```jsx
-const { socket, isConnected, socketData } = useUpbitWebSocket(
+const {socket, isConnected, socketData} = useUpbitWebSocket(
   targetMarketCodes,
   type,
-  option
+  option,
 );
 ```
 
@@ -71,15 +71,15 @@ option : { throttle_time: 400, max_length_queue: 100 }
 ### useFetchMarketCode
 
 ```jsx
-import { useFetchMarketCode } from "use-upbit-api";
+import {useFetchMarketCode} from 'use-upbit-api';
 
 function App() {
-  const { isLoading, marketCodes } = useFetchMarketCode();
+  const {isLoading, marketCodes} = useFetchMarketCode();
 
   return (
     <>
       {!isLoading
-        ? marketCodes.map((ele) => <div key={ele.market}>{ele.market}</div>)
+        ? marketCodes.map(ele => <div key={ele.market}>{ele.market}</div>)
         : null}
     </>
   );
@@ -95,16 +95,16 @@ export default App;
 **ticker API**
 
 ```jsx
-import { useFetchMarketCode } from "use-upbit-api";
-import { useUpbitWebSocket } from "use-upbit-api";
+import {useFetchMarketCode} from 'use-upbit-api';
+import {useUpbitWebSocket} from 'use-upbit-api';
 
 function App() {
-  const option = { throttle_time: 400, max_length_queue: 100 };
-  const { isLoading, marketCodes: targetMarketCodes } = useFetchMarketCode();
-  const { socket, isConnected, socketData } = useUpbitWebSocket(
+  const option = {throttle_time: 400, max_length_queue: 100};
+  const {isLoading, marketCodes: targetMarketCodes} = useFetchMarketCode();
+  const {socket, isConnected, socketData} = useUpbitWebSocket(
     targetMarketCodes,
-    "ticker",
-    option
+    'ticker',
+    option,
   );
 
   return (
@@ -139,22 +139,22 @@ export default App;
 **orderbook API**
 
 ```jsx
-import { useState } from "react";
-import { useUpbitWebSocket } from "use-upbit-api";
+import {useState} from 'react';
+import {useUpbitWebSocket} from 'use-upbit-api';
 
 function App() {
-  const option = { throttle_time: 400, max_length_queue: 100 };
+  const option = {throttle_time: 400, max_length_queue: 100};
   const [targetMarketCodes, setTargetMarketCodes] = useState([
     {
-      market: "KRW-BTC",
-      korean_name: "비트코인",
-      english_name: "Bitcoin",
+      market: 'KRW-BTC',
+      korean_name: '비트코인',
+      english_name: 'Bitcoin',
     },
   ]);
-  const { socket, isConnected, socketData } = useUpbitWebSocket(
+  const {socket, isConnected, socketData} = useUpbitWebSocket(
     targetMarketCodes,
-    "orderbook",
-    option
+    'orderbook',
+    option,
   );
 
   return (
@@ -203,22 +203,22 @@ export default App;
 **trade API**
 
 ```jsx
-import { useState } from "react";
-import { useUpbitWebSocket } from "use-upbit-api";
+import {useState} from 'react';
+import {useUpbitWebSocket} from 'use-upbit-api';
 
 function App() {
-  const option = { throttle_time: 400, max_length_queue: 100 };
+  const option = {throttle_time: 400, max_length_queue: 100};
   const [targetMarketCodes, setTargetMarketCodes] = useState([
     {
-      market: "KRW-BTC",
-      korean_name: "비트코인",
-      english_name: "Bitcoin",
+      market: 'KRW-BTC',
+      korean_name: '비트코인',
+      english_name: 'Bitcoin',
     },
   ]);
-  const { socket, isConnected, socketData } = useUpbitWebSocket(
+  const {socket, isConnected, socketData} = useUpbitWebSocket(
     targetMarketCodes,
-    "trade",
-    option
+    'trade',
+    option,
   );
 
   return (
@@ -263,33 +263,36 @@ export default App;
 **ticker API**
 
 ```tsx
-import { TickerInterface, useUpbitWebSocket } from "use-upbit-api";
+import {TickerInterface, useUpbitWebSocket} from 'use-upbit-api';
 
-const { socket, isConnected, socketData }: TickerInterface = useUpbitWebSocket(
+const {socket, isConnected, socketData}: TickerInterface = useUpbitWebSocket(
   targetMarketCodes,
-  "ticker",
-  option
+  'ticker',
+  option,
 );
 ```
 
 **orderbook API**
 
 ```tsx
-import { OrderbookInterface, useUpbitWebSocket } from "use-upbit-api";
+import {OrderbookInterface, useUpbitWebSocket} from 'use-upbit-api';
 
-const { socket, isConnected, socketData }: OrderbookInterface =
-  useUpbitWebSocket(targetMarketCodes, "orderbook", option);
+const {socket, isConnected, socketData}: OrderbookInterface = useUpbitWebSocket(
+  targetMarketCodes,
+  'orderbook',
+  option,
+);
 ```
 
 **trade API**
 
 ```tsx
-import { TradeInterface, useUpbitWebSocket } from "use-upbit-api";
+import {TradeInterface, useUpbitWebSocket} from 'use-upbit-api';
 
-const { socket, isConnected, socketData }: TradeInterface = useUpbitWebSocket(
+const {socket, isConnected, socketData}: TradeInterface = useUpbitWebSocket(
   targetMarketCodes,
-  "trade",
-  option
+  'trade',
+  option,
 );
 ```
 

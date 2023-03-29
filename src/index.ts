@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { cloneDeep, throttle } from "lodash";
+import {useCallback, useEffect, useRef, useState} from 'react';
+import {cloneDeep, throttle} from 'lodash';
 
 export interface ImarketCodes {
   market: string;
@@ -7,12 +7,12 @@ export interface ImarketCodes {
   english_name: string;
 }
 
-export type RequestType = "ticker" | "orderbook" | "trade";
-export type ChangeType = "RISE" | "EVEN" | "FALL";
-export type OrderType = "ASK" | "BID";
-export type MarketStateType = "PREVIEW" | "ACTIVE" | "DELISTED";
-export type MarketWarningType = "NONE" | "CAUTION";
-export type StreamType = "SNAPSHOT" | "REALTIME";
+export type RequestType = 'ticker' | 'orderbook' | 'trade';
+export type ChangeType = 'RISE' | 'EVEN' | 'FALL';
+export type OrderType = 'ASK' | 'BID';
+export type MarketStateType = 'PREVIEW' | 'ACTIVE' | 'DELISTED';
+export type MarketWarningType = 'NONE' | 'CAUTION';
+export type StreamType = 'SNAPSHOT' | 'REALTIME';
 
 export interface ITicker {
   type: RequestType;
@@ -104,7 +104,7 @@ export interface TradeInterface {
 
 const socketDataEncoder = (socketData: any) => {
   try {
-    const encoder = new TextDecoder("utf-8");
+    const encoder = new TextDecoder('utf-8');
     const rawData = new Uint8Array(socketData);
     const data = JSON.parse(encoder.decode(rawData));
 
@@ -117,7 +117,7 @@ const socketDataEncoder = (socketData: any) => {
 const typeChecker = (type: string) => {
   try {
     let isValid = true;
-    if (type != "ticker" && type != "orderbook" && type != "trade") {
+    if (type != 'ticker' && type != 'orderbook' && type != 'trade') {
       isValid = false;
     }
     return isValid;
@@ -214,16 +214,16 @@ const updateQueueBuffer = (buffer: any, maxSize: number) => {
 export function useUpbitWebSocket(
   targetMarketCodes: ImarketCodes[] = [
     {
-      market: "KRW-BTC",
-      korean_name: "비트코인",
-      english_name: "Bitcoin",
+      market: 'KRW-BTC',
+      korean_name: '비트코인',
+      english_name: 'Bitcoin',
     },
   ],
-  type: RequestType = "ticker",
-  options = { throttle_time: 400, max_length_queue: 100 }
+  type: RequestType = 'ticker',
+  options = {throttle_time: 400, max_length_queue: 100},
 ) {
-  const SOCKET_URL: string = "wss://api.upbit.com/websocket/v1";
-  const { throttle_time, max_length_queue } = options;
+  const SOCKET_URL: string = 'wss://api.upbit.com/websocket/v1';
+  const {throttle_time, max_length_queue} = options;
   const socket = useRef<WebSocket | null>(null);
   const buffer = useRef<any[]>([] as any[]);
 
@@ -236,25 +236,25 @@ export function useUpbitWebSocket(
       try {
         const lastBuffers = getLastBuffers(
           buffer.current,
-          targetMarketCodes.length
+          targetMarketCodes.length,
         );
 
         switch (type) {
-          case "ticker":
+          case 'ticker':
             const sortedBuffers = sortBuffers(lastBuffers, targetMarketCodes);
             setLoadingBuffer(sortedBuffers);
             buffer.current = [];
             break;
 
-          case "orderbook":
+          case 'orderbook':
             if (lastBuffers) setSocketData(lastBuffers[0]);
             buffer.current = [];
             break;
 
-          case "trade":
+          case 'trade':
             const updatedBuffer = updateQueueBuffer(
               buffer.current,
-              max_length_queue
+              max_length_queue,
             );
             buffer.current = updatedBuffer;
             setSocketData(updatedBuffer);
@@ -267,7 +267,7 @@ export function useUpbitWebSocket(
         throw new Error();
       }
     }, throttle_time),
-    [targetMarketCodes]
+    [targetMarketCodes],
   );
   // socket 세팅
   useEffect(() => {
@@ -275,15 +275,15 @@ export function useUpbitWebSocket(
       const isTypeValid = typeChecker(type);
       if (!isTypeValid) {
         console.error(
-          "[Error] | input type is unknown. (input type should be 'ticker' or 'orderbook' or 'trade')"
+          "[Error] | input type is unknown. (input type should be 'ticker' or 'orderbook' or 'trade')",
         );
         throw new Error();
       }
 
-      if (type === "orderbook" || type === "trade") {
+      if (type === 'orderbook' || type === 'trade') {
         if (targetMarketCodes.length > 1) {
           console.error(
-            "[Error] | 'Length' of Target Market Codes should be only 'one' in 'orderbook' and 'trade'. you can request only 1 marketcode's data, when you want to get 'orderbook' or 'trade' data."
+            "[Error] | 'Length' of Target Market Codes should be only 'one' in 'orderbook' and 'trade'. you can request only 1 marketcode's data, when you want to get 'orderbook' or 'trade' data.",
           );
           throw new Error();
         }
@@ -291,21 +291,21 @@ export function useUpbitWebSocket(
 
       if (targetMarketCodes.length > 0 && !socket.current) {
         socket.current = new WebSocket(SOCKET_URL);
-        socket.current.binaryType = "arraybuffer";
+        socket.current.binaryType = 'arraybuffer';
 
         const socketOpenHandler = () => {
           setIsConnected(true);
-          console.log("[연결완료] | socket Open Type: ", type);
+          console.log('[연결완료] | socket Open Type: ', type);
           if (socket.current?.readyState == 1) {
             const sendContent = [
-              { ticket: "test" },
+              {ticket: 'test'},
               {
                 type: type,
-                codes: targetMarketCodes.map((code) => code.market),
+                codes: targetMarketCodes.map(code => code.market),
               },
             ];
             socket.current.send(JSON.stringify(sendContent));
-            console.log("message sending done");
+            console.log('message sending done');
           }
         };
 
@@ -314,11 +314,11 @@ export function useUpbitWebSocket(
           setLoadingBuffer([]);
           setSocketData(null);
           buffer.current = [];
-          console.log("연결종료");
+          console.log('연결종료');
         };
 
         const socketErrorHandler = (error: any) => {
-          console.error("[Error]", error);
+          console.error('[Error]', error);
         };
 
         const socketMessageHandler = (evt: MessageEvent) => {
@@ -362,17 +362,17 @@ export function useUpbitWebSocket(
     }
   }, [loadingBuffer]);
 
-  return { socket: socket.current, isConnected, socketData };
+  return {socket: socket.current, isConnected, socketData};
 }
 
 export function useFetchMarketCode() {
   const REST_API_URL: string =
-    "https://api.upbit.com/v1/market/all?isDetails=false";
-  const options = { method: "GET", headers: { Accept: "application/json" } };
+    'https://api.upbit.com/v1/market/all?isDetails=false';
+  const options = {method: 'GET', headers: {Accept: 'application/json'}};
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [marketCodes, setMarketCodes] = useState<ImarketCodes[]>(
-    [] as ImarketCodes[]
+    [] as ImarketCodes[],
   );
 
   const fetchMarketCodes = useCallback(async () => {
@@ -387,5 +387,5 @@ export function useFetchMarketCode() {
     fetchMarketCodes();
   }, []);
 
-  return { isLoading, marketCodes };
+  return {isLoading, marketCodes};
 }

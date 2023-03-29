@@ -114,7 +114,7 @@ const socketDataEncoder = (socketData: any) => {
   }
 };
 
-const typeChecker = (type: string) => {
+export const typeChecker = (type: string) => {
   try {
     let isValid = true;
     if (type != 'ticker' && type != 'orderbook' && type != 'trade') {

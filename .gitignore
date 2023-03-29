@@ -1,4 +1,7 @@
-/node_modules
+node_modules/
+coverage/
+npm-debug.log
+yarn-error.log
 /lib
 /ts-develop
 .DS_Store

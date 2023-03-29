@@ -3,14 +3,23 @@
     "browser": true,
     "es2021": true
   },
-  "extends": ["standard-with-typescript", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:prettier/recommended"
+  ],
   "overrides": [],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
   "parserOptions": {
+    "project": "./tsconfig.json",
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
+  "root": true,
   "rules": {
-    "semi": [2, "always"],
-    "no-unused-vars": "warn"
-  }
+    "semi": [2, "always"]
+  },
+  "ignorePatterns": ["lib/", "node_modules/"]
 }

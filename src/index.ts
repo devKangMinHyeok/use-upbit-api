@@ -366,26 +366,31 @@ export function useUpbitWebSocket(
 }
 
 export function useFetchMarketCode() {
-  const REST_API_URL: string =
-    'https://api.upbit.com/v1/market/all?isDetails=false';
+  const REST_API_URL = 'https://api.upbit.com/v1/market/all?isDetails=false';
   const options = {method: 'GET', headers: {Accept: 'application/json'}};
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [marketCodes, setMarketCodes] = useState<ImarketCodes[]>(
-    [] as ImarketCodes[],
-  );
+  const [marketCodes, setMarketCodes] = useState<ImarketCodes[]>([]);
 
   const fetchMarketCodes = useCallback(async () => {
-    const response = await fetch(REST_API_URL, options);
-    const result: ImarketCodes[] = await response.json();
+    try {
+      const response = await fetch(REST_API_URL, options);
+      if (!response.ok) {
+        throw new Error('Failed to fetch market codes');
+      }
+      const result = (await response.json()) as ImarketCodes[];
 
-    setMarketCodes(result);
-    setIsLoading(false);
+      setMarketCodes(result);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching market codes:', error);
+      setIsLoading(false);
+    }
   }, []);
 
   useEffect(() => {
-    fetchMarketCodes();
-  }, []);
+    void fetchMarketCodes();
+  }, [fetchMarketCodes]);
 
   return {isLoading, marketCodes};
 }

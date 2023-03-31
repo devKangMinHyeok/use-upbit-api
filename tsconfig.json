@@ -1,10 +1,22 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
+    "module": "CommonJS",
+    "allowJs": true,
+    "target": "ES5",
     "declaration": true,
     "outDir": "./lib",
-    "strict": true
+    "rootDir": "./",
+    "strict": true,
+    "moduleResolution": "Node",
+    "lib": ["ES2015", "DOM", "DOM.Iterable"],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": false,
+    "baseUrl": "./",
+    "paths": {
+      "@root/*": ["./*"],
+      "@src/*": ["src/*"]
+    }
   },
-  "include": ["src/**/*.ts"]
+  "include": ["./src/**/*.ts", "./test/**/*.ts"],
+  "exclude": ["node_modules", "lib", ".github"]
 }

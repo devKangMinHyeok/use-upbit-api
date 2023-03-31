@@ -1,4 +1,4 @@
-import {typeChecker} from '../../src/index';
+import {typeChecker} from '../../../src/index';
 
 describe('typeChecker', () => {
   it("should return true when passed 'ticker', 'orderbook', or 'trade'", () => {

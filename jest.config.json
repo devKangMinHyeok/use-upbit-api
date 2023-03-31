@@ -6,5 +6,9 @@
   "moduleNameMapper": {
     "@root(.*)$": "<rootDir>/$1",
     "@src(.*)$": "<rootDir>/src$1"
-  }
+  },
+  "setupFilesAfterEnv": ["./jest.setup.ts"],
+  "preset": "ts-jest",
+  "testEnvironment": "jsdom",
+  "testMatch": ["**/test/**/*.test.ts"]
 }

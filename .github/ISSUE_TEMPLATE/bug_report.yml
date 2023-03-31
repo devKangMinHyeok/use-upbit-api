@@ -1,0 +1,43 @@
+name: Bug Report 🪲
+description: Create a bug report to help us improve
+title: '[Bug]: '
+labels: ['🐞 Bug Report']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Please provide all the information requested. Issues that do not follow this format are likely to stall.
+        ---
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: |
+        The version of Mips-simulator-js you are using.
+        Is it the [latest](https://github.com/mipsSimulatorUNIST/simulator/tree/release)? Test and see if the bug has already been fixed.
+      placeholder: ex. 2.1.9
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Provide a detailed list of steps that reproduce the issue.
+      placeholder:
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and Actual behavior
+      description: A description of what you expect to happen. A clear and concise description of the unexpected behavior.
+      placeholder: I expect to see X or Y, but  A bug happened!
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Anything else that might be relevant
+    validations:
+      required: false

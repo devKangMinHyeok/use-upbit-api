@@ -222,7 +222,7 @@ export function useUpbitWebSocket(
   type: RequestType = 'ticker',
   options = {throttle_time: 400, max_length_queue: 100},
 ) {
-  const SOCKET_URL: string = 'wss://api.upbit.com/websocket/v1';
+  const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';
   const {throttle_time, max_length_queue} = options;
   const socket = useRef<WebSocket | null>(null);
   const buffer = useRef<any[]>([] as any[]);

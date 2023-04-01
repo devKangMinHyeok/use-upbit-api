@@ -75,7 +75,7 @@ export function useWsTicker(
         };
 
         const socketErrorHandler = (event: Event) => {
-          const error = (event as ErrorEvent).error as Error; // extract the error information from the event
+          const error = (event as ErrorEvent).error as Error;
           console.error('[Error]', error);
         };
 

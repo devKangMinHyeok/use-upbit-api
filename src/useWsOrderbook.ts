@@ -1,4 +1,4 @@
-import {ImarketCodes} from './interfaces';
+import {IOrderbook, ImarketCodes} from './interfaces';
 import {useRef, useState, useCallback, useEffect} from 'react';
 import {throttle} from 'lodash';
 import getLastBuffers from './functions/getLastBuffers';
@@ -18,11 +18,10 @@ export function useWsOrderbook(
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';
   const {throttle_time, max_length_queue} = options;
   const socket = useRef<WebSocket | null>(null);
-  const buffer = useRef<any[]>([] as any[]);
+  const buffer = useRef<IOrderbook[]>([]);
 
   const [isConnected, setIsConnected] = useState<boolean>(false);
-  const [loadingBuffer, setLoadingBuffer] = useState<any>([]);
-  const [socketData, setSocketData] = useState<any>();
+  const [socketData, setSocketData] = useState<IOrderbook>();
 
   const throttled = useCallback(
     throttle(() => {
@@ -31,7 +30,7 @@ export function useWsOrderbook(
           buffer.current,
           targetMarketCodes.length,
         );
-        if (lastBuffers) setSocketData(lastBuffers[0]);
+        lastBuffers && setSocketData(lastBuffers[0]);
         buffer.current = [];
       } catch (error) {
         throw new Error();
@@ -70,19 +69,19 @@ export function useWsOrderbook(
 
         const socketCloseHandler = () => {
           setIsConnected(false);
-          setLoadingBuffer([]);
-          setSocketData(null);
+          setSocketData(undefined);
           buffer.current = [];
           console.log('연결종료');
         };
 
-        const socketErrorHandler = (error: any) => {
+        const socketErrorHandler = (event: Event) => {
+          const error = (event as ErrorEvent).error as Error;
           console.error('[Error]', error);
         };
 
         const socketMessageHandler = (evt: MessageEvent<ArrayBuffer>) => {
-          const data = socketDataEncoder(evt.data);
-          buffer.current.push(data);
+          const data = socketDataEncoder<IOrderbook>(evt.data);
+          data && buffer.current.push(data);
           throttled();
         };
 
@@ -103,23 +102,6 @@ export function useWsOrderbook(
       throw new Error();
     }
   }, [targetMarketCodes]);
-
-  useEffect(() => {
-    try {
-      if (loadingBuffer.length > 0) {
-        if (!socketData) {
-          setSocketData(loadingBuffer);
-        } else {
-          setSocketData((prev: any) => {
-            return updateSocketData(prev, loadingBuffer);
-          });
-          setLoadingBuffer([]);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [loadingBuffer]);
 
   return {socket: socket.current, isConnected, socketData};
 }

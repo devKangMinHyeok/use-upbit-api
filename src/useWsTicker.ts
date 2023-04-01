@@ -14,10 +14,10 @@ export function useWsTicker(
       english_name: 'Bitcoin',
     },
   ],
-  options = {throttle_time: 400, max_length_queue: 100},
+  options = {throttle_time: 400},
 ) {
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';
-  const {throttle_time, max_length_queue} = options;
+  const {throttle_time} = options;
   const socket = useRef<WebSocket | null>(null);
   const buffer = useRef<ITicker[]>([]);
 

@@ -1,10 +1,9 @@
-import {ImarketCodes} from './interfaces';
+import {ITrade, ImarketCodes} from './interfaces';
 import {useRef, useState, useCallback, useEffect} from 'react';
 import {throttle} from 'lodash';
-import getLastBuffers from './functions/getLastBuffers';
+
 import updateQueueBuffer from './functions/updateQueueBuffer';
 import socketDataEncoder from './functions/socketDataEncoder';
-import updateSocketData from './functions/updateSocketData';
 
 export function useWsTrade(
   targetMarketCodes: ImarketCodes[] = [
@@ -19,19 +18,14 @@ export function useWsTrade(
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';
   const {throttle_time, max_length_queue} = options;
   const socket = useRef<WebSocket | null>(null);
-  const buffer = useRef<any[]>([] as any[]);
+  const buffer = useRef<ITrade[]>([]);
 
   const [isConnected, setIsConnected] = useState<boolean>(false);
-  const [loadingBuffer, setLoadingBuffer] = useState<any>([]);
-  const [socketData, setSocketData] = useState<any>();
+  const [socketData, setSocketData] = useState<ITrade[]>();
 
   const throttled = useCallback(
     throttle(() => {
       try {
-        const lastBuffers = getLastBuffers(
-          buffer.current,
-          targetMarketCodes.length,
-        );
         const updatedBuffer = updateQueueBuffer(
           buffer.current,
           max_length_queue,
@@ -76,19 +70,19 @@ export function useWsTrade(
 
         const socketCloseHandler = () => {
           setIsConnected(false);
-          setLoadingBuffer([]);
-          setSocketData(null);
+          setSocketData([]);
           buffer.current = [];
           console.log('연결종료');
         };
 
-        const socketErrorHandler = (error: any) => {
+        const socketErrorHandler = (event: Event) => {
+          const error = (event as ErrorEvent).error as Error;
           console.error('[Error]', error);
         };
 
-        const socketMessageHandler = (evt: MessageEvent) => {
-          const data = socketDataEncoder(evt.data);
-          buffer.current.push(data);
+        const socketMessageHandler = (evt: MessageEvent<ArrayBuffer>) => {
+          const data = socketDataEncoder<ITrade>(evt.data);
+          data && buffer.current.push(data);
           throttled();
         };
 
@@ -109,23 +103,6 @@ export function useWsTrade(
       throw new Error();
     }
   }, [targetMarketCodes]);
-
-  useEffect(() => {
-    try {
-      if (loadingBuffer.length > 0) {
-        if (!socketData) {
-          setSocketData(loadingBuffer);
-        } else {
-          setSocketData((prev: any) => {
-            return updateSocketData(prev, loadingBuffer);
-          });
-          setLoadingBuffer([]);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [loadingBuffer]);
 
   return {socket: socket.current, isConnected, socketData};
 }

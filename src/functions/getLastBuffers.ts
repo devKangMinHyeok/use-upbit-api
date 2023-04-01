@@ -1,4 +1,9 @@
-const getLastBuffers = <T>(buffer: T[], maxNumResult: number) => {
+import {IOrderbook, ITicker} from '../interfaces';
+
+const getLastBuffers = <T extends IOrderbook | ITicker>(
+  buffer: T[],
+  maxNumResult: number,
+) => {
   try {
     const result: T[] = [];
 

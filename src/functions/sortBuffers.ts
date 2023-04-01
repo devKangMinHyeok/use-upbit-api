@@ -1,4 +1,5 @@
-import {ImarketCodes} from '../../lib/src/index.d';
+import {ImarketCodes} from '../interfaces';
+
 const sortBuffers = (originalBuffers: any, sortOrder: ImarketCodes[]) => {
   try {
     let result = [];

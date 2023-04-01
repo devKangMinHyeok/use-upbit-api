@@ -1,14 +1,12 @@
-import {useCallback, useEffect, useRef, useState} from 'react';
-import {cloneDeep, throttle} from 'lodash';
+import {ImarketCodes} from './interfaces';
+import {useRef, useState, useCallback, useEffect} from 'react';
+import {throttle} from 'lodash';
 import getLastBuffers from './functions/getLastBuffers';
-import sortBuffers from './functions/sortBuffers';
 import updateQueueBuffer from './functions/updateQueueBuffer';
-import {typeChecker} from './functions/typeChecker';
 import socketDataEncoder from './functions/socketDataEncoder';
 import updateSocketData from './functions/updateSocketData';
-import {ImarketCodes, RequestType} from './interfaces';
 
-export function useUpbitWebSocket(
+export function useWsTrade(
   targetMarketCodes: ImarketCodes[] = [
     {
       market: 'KRW-BTC',
@@ -16,7 +14,6 @@ export function useUpbitWebSocket(
       english_name: 'Bitcoin',
     },
   ],
-  type: RequestType = 'ticker',
   options = {throttle_time: 400, max_length_queue: 100},
 ) {
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';
@@ -35,31 +32,12 @@ export function useUpbitWebSocket(
           buffer.current,
           targetMarketCodes.length,
         );
-
-        switch (type) {
-          case 'ticker':
-            const sortedBuffers = sortBuffers(lastBuffers, targetMarketCodes);
-            setLoadingBuffer(sortedBuffers);
-            buffer.current = [];
-            break;
-
-          case 'orderbook':
-            if (lastBuffers) setSocketData(lastBuffers[0]);
-            buffer.current = [];
-            break;
-
-          case 'trade':
-            const updatedBuffer = updateQueueBuffer(
-              buffer.current,
-              max_length_queue,
-            );
-            buffer.current = updatedBuffer;
-            setSocketData(updatedBuffer);
-            break;
-
-          default:
-            break;
-        }
+        const updatedBuffer = updateQueueBuffer(
+          buffer.current,
+          max_length_queue,
+        );
+        buffer.current = updatedBuffer;
+        setSocketData(updatedBuffer);
       } catch (error) {
         throw new Error();
       }
@@ -69,21 +47,11 @@ export function useUpbitWebSocket(
   // socket 세팅
   useEffect(() => {
     try {
-      const isTypeValid = typeChecker(type);
-      if (!isTypeValid) {
+      if (targetMarketCodes.length > 1) {
         console.error(
-          "[Error] | input type is unknown. (input type should be 'ticker' or 'orderbook' or 'trade')",
+          "[Error] | 'Length' of Target Market Codes should be only 'one' in 'orderbook' and 'trade'. you can request only 1 marketcode's data, when you want to get 'orderbook' or 'trade' data.",
         );
         throw new Error();
-      }
-
-      if (type === 'orderbook' || type === 'trade') {
-        if (targetMarketCodes.length > 1) {
-          console.error(
-            "[Error] | 'Length' of Target Market Codes should be only 'one' in 'orderbook' and 'trade'. you can request only 1 marketcode's data, when you want to get 'orderbook' or 'trade' data.",
-          );
-          throw new Error();
-        }
       }
 
       if (targetMarketCodes.length > 0 && !socket.current) {
@@ -92,12 +60,12 @@ export function useUpbitWebSocket(
 
         const socketOpenHandler = () => {
           setIsConnected(true);
-          console.log('[연결완료] | socket Open Type: ', type);
+          console.log('[연결완료] | socket Open Type: ', 'trade');
           if (socket.current?.readyState == 1) {
             const sendContent = [
               {ticket: 'test'},
               {
-                type: type,
+                type: 'trade',
                 codes: targetMarketCodes.map(code => code.market),
               },
             ];
@@ -160,38 +128,4 @@ export function useUpbitWebSocket(
   }, [loadingBuffer]);
 
   return {socket: socket.current, isConnected, socketData};
-}
-
-export function useFetchMarketCode(): {
-  isLoading: boolean;
-  marketCodes: ImarketCodes[];
-} {
-  const REST_API_URL = 'https://api.upbit.com/v1/market/all?isDetails=false';
-
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [marketCodes, setMarketCodes] = useState<ImarketCodes[]>([]);
-
-  const fetchMarketCodes = async () => {
-    const response = await fetch(REST_API_URL);
-    if (!response.ok) {
-      throw new Error('Failed to fetch market codes');
-    }
-    const result = JSON.parse(await response.text()) as ImarketCodes[];
-    try {
-      console.log(result);
-      setMarketCodes(result);
-    } catch (error) {
-      console.error('Error fetching market codes:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchMarketCodes().catch(error => {
-      console.error('Error fetching market codes:', error);
-    });
-  }, []);
-
-  return {isLoading, marketCodes};
 }

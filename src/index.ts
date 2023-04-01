@@ -1,5 +1,11 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 import {cloneDeep, throttle} from 'lodash';
+import getLastBuffers from './functions/getLastBuffers';
+import sortBuffers from './functions/sortBuffers';
+import updateQueueBuffer from './functions/updateQueueBuffer';
+import {typeChecker} from './functions/typeChecker';
+import socketDataEncoder from './functions/socketDataEncoder';
+import updateSocketData from './functions/updateSocketData';
 
 export interface ImarketCodes {
   market: string;
@@ -101,115 +107,6 @@ export interface TradeInterface {
   isConnected: boolean;
   socketData: ITrade[];
 }
-
-const socketDataEncoder = (socketData: any) => {
-  try {
-    const encoder = new TextDecoder('utf-8');
-    const rawData = new Uint8Array(socketData);
-    const data = JSON.parse(encoder.decode(rawData));
-
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const typeChecker = (type: string) => {
-  try {
-    let isValid = true;
-    if (type != 'ticker' && type != 'orderbook' && type != 'trade') {
-      isValid = false;
-    }
-    return isValid;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const getLastBuffers = (buffer: any, maxNumResult: number) => {
-  try {
-    let result = [];
-
-    for (let i = buffer.length - 1; i >= 0; i--) {
-      let isExist = false;
-
-      for (let j = 0; j < result.length; j++) {
-        if (result[j].code === buffer[i].code) {
-          isExist = true;
-        } else continue;
-      }
-
-      if (!isExist) result.push(buffer[i]);
-      else {
-        if (maxNumResult <= result.length) break;
-        else continue;
-      }
-    }
-
-    return result;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const sortBuffers = (originalBuffers: any, sortOrder: ImarketCodes[]) => {
-  try {
-    let result = [];
-    for (let i = 0; i < sortOrder.length; i++) {
-      const targetCode = sortOrder[i].market;
-      for (let j = 0; j < originalBuffers.length; j++) {
-        if (targetCode === originalBuffers[j].code) {
-          result.push(originalBuffers[j]);
-          break;
-        } else continue;
-      }
-    }
-    return result;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const updateSocketData = (origininalData: any, newData: any) => {
-  try {
-    const copyOriginal = cloneDeep(origininalData);
-    const copyNew = cloneDeep(newData);
-
-    if (copyOriginal && newData) {
-      for (let i = 0; i < copyOriginal.length; i++) {
-        const target = copyOriginal[i];
-        for (let j = 0; j < newData.length; j++) {
-          if (target.code === newData[j].code) {
-            copyOriginal[i] = newData[j];
-            copyNew[j] = null;
-            break;
-          } else continue;
-        }
-      }
-
-      // 원본 데이터에 없는 market 데이터가 새롭게 받은 데이터에 존재하는 case
-      const remainNew = copyNew.filter((element: any) => element !== null);
-      if (remainNew.length > 0) {
-        copyOriginal.push(...remainNew);
-      }
-    }
-    return copyOriginal;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const updateQueueBuffer = (buffer: any, maxSize: number) => {
-  try {
-    const copyBuffer = cloneDeep(buffer);
-    while (copyBuffer.length >= maxSize) {
-      copyBuffer.shift();
-    }
-    return copyBuffer;
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 export function useUpbitWebSocket(
   targetMarketCodes: ImarketCodes[] = [

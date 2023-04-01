@@ -80,7 +80,7 @@ export function useWsOrderbook(
           console.error('[Error]', error);
         };
 
-        const socketMessageHandler = (evt: MessageEvent) => {
+        const socketMessageHandler = (evt: MessageEvent<ArrayBuffer>) => {
           const data = socketDataEncoder(evt.data);
           buffer.current.push(data);
           throttled();

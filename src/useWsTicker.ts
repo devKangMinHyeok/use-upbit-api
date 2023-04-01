@@ -1,4 +1,4 @@
-import {ImarketCodes} from './interfaces';
+import {ITicker, ImarketCodes} from './interfaces';
 import {useRef, useState, useCallback, useEffect} from 'react';
 import getLastBuffers from './functions/getLastBuffers';
 import sortBuffers from './functions/sortBuffers';
@@ -19,11 +19,11 @@ export function useWsTicker(
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';
   const {throttle_time, max_length_queue} = options;
   const socket = useRef<WebSocket | null>(null);
-  const buffer = useRef<any[]>([] as any[]);
+  const buffer = useRef<ITicker[]>([]);
 
   const [isConnected, setIsConnected] = useState<boolean>(false);
-  const [loadingBuffer, setLoadingBuffer] = useState<any>([]);
-  const [socketData, setSocketData] = useState<any>();
+  const [loadingBuffer, setLoadingBuffer] = useState<ITicker[]>([]);
+  const [socketData, setSocketData] = useState<ITicker[]>();
 
   const throttled = useCallback(
     throttle(() => {
@@ -32,11 +32,13 @@ export function useWsTicker(
           buffer.current,
           targetMarketCodes.length,
         );
-        const sortedBuffers = sortBuffers(lastBuffers, targetMarketCodes);
-        setLoadingBuffer(sortedBuffers);
+        const sortedBuffers =
+          lastBuffers && sortBuffers(lastBuffers, targetMarketCodes);
+        sortedBuffers && setLoadingBuffer(sortedBuffers);
         buffer.current = [];
       } catch (error) {
-        throw new Error();
+        console.error(error);
+        return;
       }
     }, throttle_time),
     [targetMarketCodes],
@@ -67,19 +69,22 @@ export function useWsTicker(
         const socketCloseHandler = () => {
           setIsConnected(false);
           setLoadingBuffer([]);
-          setSocketData(null);
+          setSocketData([]);
           buffer.current = [];
           console.log('연결종료');
         };
 
-        const socketErrorHandler = (error: any) => {
+        const socketErrorHandler = (event: Event) => {
+          const error = (event as ErrorEvent).error as Error; // extract the error information from the event
           console.error('[Error]', error);
         };
 
-        const socketMessageHandler = (evt: MessageEvent) => {
-          const data = socketDataEncoder(evt.data);
-          buffer.current.push(data);
-          throttled();
+        const socketMessageHandler = (evt: MessageEvent<ArrayBuffer>) => {
+          const data = socketDataEncoder<ITicker>(evt.data);
+          if (data) {
+            buffer.current.push(data);
+            throttled();
+          }
         };
 
         socket.current.onopen = socketOpenHandler;
@@ -106,8 +111,8 @@ export function useWsTicker(
         if (!socketData) {
           setSocketData(loadingBuffer);
         } else {
-          setSocketData((prev: any) => {
-            return updateSocketData(prev, loadingBuffer);
+          setSocketData(prev => {
+            return prev && updateSocketData(prev, loadingBuffer);
           });
           setLoadingBuffer([]);
         }

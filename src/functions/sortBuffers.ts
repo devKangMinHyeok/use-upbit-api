@@ -1,8 +1,11 @@
-import {ImarketCodes} from '../interfaces';
+import {ITicker, ImarketCodes} from '../interfaces';
 
-const sortBuffers = (originalBuffers: any, sortOrder: ImarketCodes[]) => {
+const sortBuffers = (
+  originalBuffers: ITicker[],
+  sortOrder: ImarketCodes[],
+): ITicker[] | undefined => {
   try {
-    let result = [];
+    const result: ITicker[] = [];
     for (let i = 0; i < sortOrder.length; i++) {
       const targetCode = sortOrder[i].market;
       for (let j = 0; j < originalBuffers.length; j++) {

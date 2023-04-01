@@ -1,5 +1,5 @@
 import {cloneDeep} from 'lodash';
-const updateSocketData = (origininalData: any, newData: any) => {
+const updateSocketData = <T>(origininalData: T[], newData: T[]) => {
   try {
     const copyOriginal = cloneDeep(origininalData);
     const copyNew = cloneDeep(newData);
@@ -10,7 +10,7 @@ const updateSocketData = (origininalData: any, newData: any) => {
         for (let j = 0; j < newData.length; j++) {
           if (target.code === newData[j].code) {
             copyOriginal[i] = newData[j];
-            copyNew[j] = null;
+            copyNew[j] = null as T;
             break;
           } else continue;
         }

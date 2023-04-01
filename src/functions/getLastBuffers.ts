@@ -1,6 +1,8 @@
+import {ITicker} from '../interfaces';
+
 const getLastBuffers = (buffer: any, maxNumResult: number) => {
   try {
-    let result = [];
+    const result: ITicker[] = [];
 
     for (let i = buffer.length - 1; i >= 0; i--) {
       let isExist = false;

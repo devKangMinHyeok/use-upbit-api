@@ -1,49 +1,15 @@
 import {IOrderbook, ITicker} from '@root/src/interfaces';
 import getLastBuffers from '../../../src/functions/getLastBuffers';
-
-const createTicker = (code: string): ITicker => ({
-  type: 'ticker',
-  code: code,
-  opening_price: 100,
-  high_price: 200,
-  low_price: 50,
-  trade_price: 150,
-  prev_closing_price: 90,
-  acc_trade_price: 1000,
-  change: 'RISE',
-  change_price: 10,
-  signed_change_price: 10,
-  change_rate: 0.1,
-  signed_change_rate: 0.1,
-  ask_bid: 'ASK',
-  trade_volume: 100,
-  acc_trade_volume: 1000,
-  trade_date: '20230101',
-  trade_time: '235959',
-  trade_timestamp: 1643664000000,
-  acc_ask_volume: 500,
-  acc_bid_volume: 500,
-  highest_52_week_price: 250,
-  highest_52_week_date: '20220101',
-  lowest_52_week_price: 50,
-  lowest_52_week_date: '20220101',
-  market_state: 'ACTIVE',
-  is_trading_suspended: false,
-  market_warning: 'NONE',
-  timestamp: 1643664000000,
-  acc_trade_price_24h: 2000,
-  acc_trade_volume_24h: 2000,
-  stream_type: 'SNAPSHOT',
-});
+import generateTicker from '@root/test/generators/generateTicker';
 
 describe('getLastBuffers', () => {
   it('should return the correct number of unique items', () => {
     const buffer: (ITicker | IOrderbook)[] = [
-      createTicker('A'),
-      createTicker('B'),
-      createTicker('C'),
-      createTicker('A'),
-      createTicker('D'),
+      generateTicker('A'),
+      generateTicker('B'),
+      generateTicker('C'),
+      generateTicker('A'),
+      generateTicker('D'),
     ];
 
     const maxNumResult = 3;
@@ -64,10 +30,10 @@ describe('getLastBuffers', () => {
 
   it('should return all unique items if maxNumResult is greater than the number of unique items', () => {
     const buffer: (ITicker | IOrderbook)[] = [
-      createTicker('A'),
-      createTicker('B'),
-      createTicker('C'),
-      createTicker('A'),
+      generateTicker('A'),
+      generateTicker('B'),
+      generateTicker('C'),
+      generateTicker('A'),
     ];
 
     const maxNumResult = 5;

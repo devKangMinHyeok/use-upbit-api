@@ -7,6 +7,7 @@ const socketDataEncoder = <T>(socketData: ArrayBuffer): T | undefined => {
     return data;
   } catch (error) {
     console.error(error);
+    return undefined;
   }
 };
 

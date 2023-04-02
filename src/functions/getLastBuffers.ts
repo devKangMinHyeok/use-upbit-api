@@ -13,19 +13,20 @@ const getLastBuffers = <T extends IOrderbook | ITicker>(
       for (let j = 0; j < result.length; j++) {
         if (result[j].code === buffer[i].code) {
           isExist = true;
-        } else continue;
+          break;
+        }
       }
 
-      if (!isExist) result.push(buffer[i]);
-      else {
-        if (maxNumResult <= result.length) break;
-        else continue;
+      if (!isExist) {
+        result.push(buffer[i]);
+        if (result.length >= maxNumResult) break;
       }
     }
 
     return result;
   } catch (error) {
     console.error(error);
+    return [];
   }
 };
 

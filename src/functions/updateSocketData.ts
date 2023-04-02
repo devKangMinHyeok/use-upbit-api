@@ -1,31 +1,36 @@
 import {cloneDeep} from 'lodash';
 import {ITicker} from '../interfaces';
 
-const updateSocketData = (origininalData: ITicker[], newData: ITicker[]) => {
+const updateSocketData = (
+  originalData: ITicker[],
+  newData: ITicker[],
+): ITicker[] => {
   try {
-    const copyOriginal = cloneDeep(origininalData);
-    const copyNew: (ITicker | null)[] = cloneDeep(newData);
+    const copyOriginal = cloneDeep(originalData);
+    const copyNew = cloneDeep(newData);
 
-    if (copyOriginal && newData) {
-      for (let i = 0; i < copyOriginal.length; i++) {
-        const target = copyOriginal[i];
-        for (let j = 0; j < newData.length; j++) {
-          if (target.code === newData[j].code) {
-            copyOriginal[i] = newData[j];
-            copyNew[j] = null;
-            break;
-          } else continue;
-        }
-      }
-
-      // 원본 데이터에 없는 market 데이터가 새롭게 받은 데이터에 존재하는 case
-      copyNew.forEach(ele => {
-        if (ele !== null) copyOriginal.push(ele);
-      });
+    if (!copyOriginal.length || !copyNew.length) {
+      return copyOriginal || copyNew;
     }
+
+    const copyOriginalIndexed = copyOriginal.reduce(
+      (acc, curr) => ({...acc, [curr.code]: curr}), // curr을 통해 copyOriginal 원소의 reference를 넘김
+      {} as {[key: string]: ITicker},
+    );
+
+    copyNew.forEach(ele => {
+      const target = copyOriginalIndexed[ele.code];
+      if (target) {
+        Object.assign(target, ele); // copyOriginal 원소의 reference인 target을 Object.assign하여 덮어씌움으로 copyOriginal까지 변경
+      } else {
+        copyOriginal.push(ele);
+      }
+    });
+
     return copyOriginal;
   } catch (error) {
     console.error(error);
+    return originalData;
   }
 };
 

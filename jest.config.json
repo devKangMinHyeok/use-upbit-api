@@ -10,5 +10,5 @@
   "setupFilesAfterEnv": ["./jest.setup.ts"],
   "preset": "ts-jest",
   "testEnvironment": "jsdom",
-  "testMatch": ["**/test/**/*.test.ts"]
+  "testMatch": ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"]
 }

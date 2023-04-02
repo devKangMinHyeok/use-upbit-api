@@ -7,13 +7,7 @@ import socketDataEncoder from './functions/socketDataEncoder';
 import updateSocketData from './functions/updateSocketData';
 
 export function useWsTicker(
-  targetMarketCodes: ImarketCodes[] = [
-    {
-      market: 'KRW-BTC',
-      korean_name: '비트코인',
-      english_name: 'Bitcoin',
-    },
-  ],
+  targetMarketCodes: ImarketCodes[],
   options = {throttle_time: 400},
 ) {
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';

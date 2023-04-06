@@ -2,9 +2,9 @@
   "name": "use-upbit-api",
   "version": "2.0.0",
   "description": "This is React Custom Hook for upbit api",
-  "main": "lib/src/index.js",
-  "types": "lib/src/index.d.ts",
-  "module": "lib/src/index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "module": "lib/index.js",
   "scripts": {
     "build": "rm -rf ./lib/ && tsc",
     "lint": "./node_modules/.bin/eslint .",

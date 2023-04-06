@@ -9,7 +9,8 @@
     "build": "rm -rf ./lib/ && tsc",
     "lint": "./node_modules/.bin/eslint .",
     "test": "jest",
-    "pre-test": "npm run build && npm run lint && npm run test"
+    "pre-test": "npm run build && npm run lint && npm run test",
+    "clear-jest": "jest --clearCache"
   },
   "repository": {
     "type": "git",

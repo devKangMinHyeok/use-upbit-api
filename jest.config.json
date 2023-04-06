@@ -2,7 +2,8 @@
   "clearMocks": true,
   "verbose": true,
   "collectCoverage": true,
-  "modulePathIgnorePatterns": ["dist"],
+  "modulePaths": ["<rootDir>/src", "<rootDir>/node_modules"],
+  "modulePathIgnorePatterns": ["lib"],
   "moduleNameMapper": {
     "@root(.*)$": "<rootDir>/$1",
     "@src(.*)$": "<rootDir>/src$1"

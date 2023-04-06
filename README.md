@@ -7,34 +7,41 @@
 
 **The use-upbit-api custom hook for Upbit API** (Korea crypto exchange). In the previous, Upbit API's Websocket usage in React is difficult for developer who is unfamiliar with websocket in React, but this React Custom Hook solve the problem. Let's use this awesome custom hooks!
 
-**_npm_** [here](https://www.npmjs.com/package/use-upbit-api)
+[_npm_ &rarr;](https://www.npmjs.com/package/use-upbit-api)
 
-**_Git Repository_** [here](https://github.com/devKangMinHyeok/use-upbit-api)
+[_Git Repository_ &rarr;](https://github.com/devKangMinHyeok/use-upbit-api)
 
-- **_Always opening_** to join this project for developing this library.
-- **_Typescript_** is supported.
-
-**_View Demo_** [here](https://devkangminhyeok.github.io/React-Upbit-API-Example/total-example)
+[_View Demo_ &rarr;](https://devkangminhyeok.github.io/React-Upbit-API-Example/total-example)
 
 ![TOTALEXAMPLE](https://user-images.githubusercontent.com/44657722/183570075-cb54905c-a57c-44a6-96c3-3d66dccef054.gif)
 
-**_View Demo Code_** is [here](https://github.com/devKangMinHyeok/React-Upbit-API-Example)
+---
 
 ## Install
 
     npm install --save use-upbit-api
 
+---
+
 ## Hooks
 
-[useFetchMarketCode](#useFetchMarketCode)
+**REST API**
 
-[useWsTicker](#useWsTicker)
+[useFetchMarketCode](#usefetchmarketcode)
 
-[useWsOrderbook](#useWsOrderbook)
+**WEBSOCKET API**
 
-[useWsTrade](#useWsTrade)
+[useWsTicker](#usewsticker)
+
+[useWsOrderbook](#usewsorderbook)
+
+[useWsTrade](#usewstrade)
+
+---
 
 ## useFetchMarketCode
+
+useFetchMarketCode hook is used to fetch market codes from upbit api
 
 ```tsx
 const {isLoading, marketCodes} = useFetchMarketCode();
@@ -42,8 +49,10 @@ const {isLoading, marketCodes} = useFetchMarketCode();
 
 ## useWsTicker
 
+useWsTicker is a custom hook that connects to a WebSocket API and retrieves real-time ticker data for a given market code.
+
 ```tsx
-const webSocketOptions = {throttle_time: 400, max_length_queue: 100};
+const webSocketOptions = {throttle_time: 400};
 
 const {socket, isConnected, socketData} = useWsTicker(
   targetMarketCode,
@@ -53,8 +62,10 @@ const {socket, isConnected, socketData} = useWsTicker(
 
 ## useWsOrderbook
 
+useWsOrderbook is a custom hook that connects to a WebSocket API and retrieves real-time order book data for a given market code.
+
 ```tsx
-const webSocketOptions = {throttle_time: 400, max_length_queue: 100};
+const webSocketOptions = {throttle_time: 400};
 
 const {socket, isConnected, socketData} = useWsOrderbook(
   targetMarketCode,
@@ -63,6 +74,9 @@ const {socket, isConnected, socketData} = useWsOrderbook(
 ```
 
 ## useWsTrade
+
+useWsTrade is a custom hook that connects to a WebSocket API
+and retrieves real-time trade data for a given market code.
 
 ```tsx
 const webSocketOptions = {throttle_time: 400, max_length_queue: 100};

@@ -4,6 +4,14 @@ import {throttle} from 'lodash';
 import getLastBuffers from '../functions/getLastBuffers';
 import socketDataEncoder from '../functions/socketDataEncoder';
 
+/**
+ * useWsOrderbook is a custom hook that connects to a WebSocket API
+ * and retrieves real-time order book data for a given market code.
+ * @param targetMarketCodes - Array of market codes to retrieve orderbook data for.
+ * @param options - `throttle_time` the data update frequency(ms).
+ * @throws targetMarketCodes should be React State Value, if not, unexpected errors can occur.
+ * @returns Object with the WebSocket object, connection status, and real-time orderbook data.
+ */
 function useWsOrderbook(
   targetMarketCodes: ImarketCodes[],
   options = {throttle_time: 400},

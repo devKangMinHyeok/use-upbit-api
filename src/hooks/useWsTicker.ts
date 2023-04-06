@@ -6,6 +6,14 @@ import {throttle} from 'lodash';
 import socketDataEncoder from '../functions/socketDataEncoder';
 import updateSocketData from '../functions/updateSocketData';
 
+/**
+ * useWsTicker is a custom hook that connects to a WebSocket API
+ * and retrieves real-time ticker data for a given market code.
+ * @param targetMarketCodes - Array of market codes to retrieve ticker data for.
+ * @param options - `throttle_time` the data update frequency(ms).
+ * @throws targetMarketCodes should be React State Value, if not, unexpected errors can occur.
+ * @returns Object with the WebSocket object, connection status, and real-time ticker data.
+ */
 function useWsTicker(
   targetMarketCodes: ImarketCodes[],
   options = {throttle_time: 400},

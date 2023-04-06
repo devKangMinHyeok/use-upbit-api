@@ -5,6 +5,15 @@ import {throttle} from 'lodash';
 import updateQueueBuffer from '../functions/updateQueueBuffer';
 import socketDataEncoder from '../functions/socketDataEncoder';
 
+/**
+ * useWsTrade is a custom hook that connects to a WebSocket API
+ * and retrieves real-time trade data for a given market code.
+ * @param targetMarketCodes - Array of market codes to retrieve trade data for.
+ * @param options - `throttle_time` the data update frequency(ms).
+ * @param options - `max_length_queue` Maximum number of items in data buffer.
+ * @throws targetMarketCodes should be React State Value, if not, unexpected errors can occur.
+ * @returns Object with the WebSocket object, connection status, and real-time trade data.
+ */
 function useWsTrade(
   targetMarketCodes: ImarketCodes[],
   options = {throttle_time: 400, max_length_queue: 100},

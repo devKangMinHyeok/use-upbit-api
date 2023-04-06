@@ -1,6 +1,10 @@
 import {ImarketCodes} from '../interfaces';
 import {useState, useEffect} from 'react';
 
+/**
+ * useFetchMarketCode hook is used to fetch market codes from upbit api
+ * @returns Object with the market codes and a loading state.
+ */
 function useFetchMarketCode(): {
   isLoading: boolean;
   marketCodes: ImarketCodes[];

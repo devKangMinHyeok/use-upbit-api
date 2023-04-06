@@ -1,4 +1,4 @@
-import {useWsTicker} from '../../../src/useWsTicker';
+import useWsTicker from '../../../src/hooks/useWsTicker';
 import * as React from 'react';
 import {useEffect, useState} from 'react';
 

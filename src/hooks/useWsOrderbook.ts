@@ -1,10 +1,10 @@
-import {IOrderbook, ImarketCodes} from './interfaces';
+import {IOrderbook, ImarketCodes} from '../interfaces';
 import {useRef, useState, useCallback, useEffect} from 'react';
 import {throttle} from 'lodash';
-import getLastBuffers from './functions/getLastBuffers';
-import socketDataEncoder from './functions/socketDataEncoder';
+import getLastBuffers from '../functions/getLastBuffers';
+import socketDataEncoder from '../functions/socketDataEncoder';
 
-export function useWsOrderbook(
+function useWsOrderbook(
   targetMarketCodes: ImarketCodes[],
   options = {throttle_time: 400},
 ) {
@@ -98,3 +98,5 @@ export function useWsOrderbook(
 
   return {socket: socket.current, isConnected, socketData};
 }
+
+export default useWsOrderbook;

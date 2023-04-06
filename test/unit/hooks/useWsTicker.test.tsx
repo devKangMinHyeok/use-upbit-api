@@ -2,11 +2,11 @@ import useWsTicker from '../../../src/hooks/useWsTicker';
 import * as React from 'react';
 import {useEffect, useState} from 'react';
 
-import {render, screen, waitFor} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 const TestComponent = () => {
-  const [marketCode, setMarketCode] = useState([
+  const [marketCode, _] = useState([
     {
       market: 'KRW-BTC',
       korean_name: '비트코인',

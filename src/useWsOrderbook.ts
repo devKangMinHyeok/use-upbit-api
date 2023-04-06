@@ -5,13 +5,7 @@ import getLastBuffers from './functions/getLastBuffers';
 import socketDataEncoder from './functions/socketDataEncoder';
 
 export function useWsOrderbook(
-  targetMarketCodes: ImarketCodes[] = [
-    {
-      market: 'KRW-BTC',
-      korean_name: '비트코인',
-      english_name: 'Bitcoin',
-    },
-  ],
+  targetMarketCodes: ImarketCodes[],
   options = {throttle_time: 400},
 ) {
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';

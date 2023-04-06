@@ -6,13 +6,7 @@ import updateQueueBuffer from './functions/updateQueueBuffer';
 import socketDataEncoder from './functions/socketDataEncoder';
 
 export function useWsTrade(
-  targetMarketCodes: ImarketCodes[] = [
-    {
-      market: 'KRW-BTC',
-      korean_name: '비트코인',
-      english_name: 'Bitcoin',
-    },
-  ],
+  targetMarketCodes: ImarketCodes[],
   options = {throttle_time: 400, max_length_queue: 100},
 ) {
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';

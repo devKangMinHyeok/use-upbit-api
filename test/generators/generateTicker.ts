@@ -1,4 +1,4 @@
-import {ITicker} from '@root/src/interfaces';
+import {ITicker} from '../../src/interfaces';
 
 function generateTicker(market: string): ITicker {
   const ticker: ITicker = {

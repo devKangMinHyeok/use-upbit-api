@@ -1,6 +1,6 @@
-import {IOrderbook, ITicker} from '@root/src/interfaces';
+import {IOrderbook, ITicker} from '../../../src/interfaces';
 import getLastBuffers from '../../../src/functions/getLastBuffers';
-import generateTicker from '@root/test/generators/generateTicker';
+import generateTicker from '../../generators/generateTicker';
 
 describe('getLastBuffers', () => {
   it('should return the correct number of unique items', () => {

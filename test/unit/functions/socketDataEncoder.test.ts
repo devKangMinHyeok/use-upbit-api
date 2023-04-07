@@ -1,4 +1,4 @@
-import socketDataEncoder from '@root/src/functions/socketDataEncoder';
+import socketDataEncoder from '../../../src/functions/socketDataEncoder';
 
 interface TestDataType {
   id: number;

@@ -1,5 +1,5 @@
 import generateTicker from '../../generators/generateTicker';
-import {ITicker} from '@root/src/interfaces';
+import {ITicker} from '../../../src/interfaces';
 import updateSocketData from '../../../src/functions/updateSocketData';
 
 describe('updateSocketData', () => {

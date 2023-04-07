@@ -4,12 +4,7 @@
   "collectCoverage": true,
   "moduleDirectories": ["node_modules", "src"],
   "modulePathIgnorePatterns": ["lib"],
-  "moduleNameMapper": {
-    "@root(.*)$": "<rootDir>/$1",
-    "@src(.*)$": "<rootDir>/src$1",
-    "^react$": "/node_modules/react",
-    "^react-dom$": "/node_modules/react-dom"
-  },
+  "moduleNameMapper": {},
   "setupFilesAfterEnv": ["./jest.setup.ts"],
   "preset": "ts-jest",
   "testEnvironment": "jsdom",

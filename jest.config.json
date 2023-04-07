@@ -7,8 +7,8 @@
   "moduleNameMapper": {
     "@root(.*)$": "<rootDir>/$1",
     "@src(.*)$": "<rootDir>/src$1",
-    "^react$": "<rootDir>/node_modules/react",
-    "^react-dom$": "<rootDir>/node_modules/react-dom"
+    "^react$": "/node_modules/react",
+    "^react-dom$": "/node_modules/react-dom"
   },
   "setupFilesAfterEnv": ["./jest.setup.ts"],
   "preset": "ts-jest",

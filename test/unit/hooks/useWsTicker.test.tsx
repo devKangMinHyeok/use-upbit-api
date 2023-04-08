@@ -5,7 +5,7 @@ import {useState} from 'react';
 import {render, screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-const TestUseWsTickerComponent = () => {
+const TestTickerComponentConnection = () => {
   const [marketCode, _] = useState([
     {
       market: 'KRW-BTC',
@@ -33,8 +33,8 @@ const TestUseWsTickerComponent = () => {
 
 describe('useWsTicker hook', () => {
   it('renders connection status and received socket data', async () => {
-    // Render the TestUseWsTickerComponent
-    render(<TestUseWsTickerComponent />);
+    // Render the TestTickerComponentConnection
+    render(<TestTickerComponentConnection />);
 
     // Check if the connection status is displayed
     const connectionStatus = screen.getByText(/Connected|Not Connected/i);

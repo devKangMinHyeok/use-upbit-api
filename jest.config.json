@@ -2,12 +2,7 @@
   "clearMocks": true,
   "verbose": true,
   "collectCoverage": true,
-  "moduleDirectories": ["node_modules", "src"],
   "modulePathIgnorePatterns": ["lib"],
-  "moduleNameMapper": {
-    "^react$": "<rootDir>/node_modules/react",
-    "^react-dom$": "<rootDir>/node_modules/react-dom"
-  },
   "setupFilesAfterEnv": ["./jest.setup.ts"],
   "preset": "ts-jest",
   "testEnvironment": "jsdom",

@@ -21,6 +21,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - run: npm ci
+      - name: List node_modules contents
+        run: ls node_modules
       - run: npm run build --if-present
       - run: npm run lint
       - run: npm run clear-jest && npm test

@@ -5,6 +5,7 @@ import sortBuffers from '../functions/sortBuffers';
 import {throttle} from 'lodash';
 import socketDataEncoder from '../functions/socketDataEncoder';
 import updateSocketData from '../functions/updateSocketData';
+import isArrayOfImarketCodes from '../functions/isArrayOfImarketCodes';
 
 /**
  * useWsTicker is a custom hook that connects to a WebSocket API
@@ -17,6 +18,7 @@ import updateSocketData from '../functions/updateSocketData';
 function useWsTicker(
   targetMarketCodes: ImarketCodes[],
   options: TKOptionsInterface = {},
+  onError?: (error: Error) => void,
 ) {
   const {throttle_time = 400, debug = false} = options;
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';
@@ -48,6 +50,11 @@ function useWsTicker(
   // socket 세팅
   useEffect(() => {
     try {
+      if (!isArrayOfImarketCodes(targetMarketCodes)) {
+        throw new Error(
+          'targetMarketCodes does not have the correct interface',
+        );
+      }
       if (targetMarketCodes.length > 0 && !socket.current) {
         socket.current = new WebSocket(SOCKET_URL);
         socket.current.binaryType = 'arraybuffer';
@@ -104,7 +111,14 @@ function useWsTicker(
         }
       };
     } catch (error) {
-      throw new Error();
+      if (error instanceof Error) {
+        if (onError) {
+          onError(error);
+        } else {
+          console.error(error);
+          throw error;
+        }
+      }
     }
   }, [targetMarketCodes]);
 
@@ -121,7 +135,7 @@ function useWsTicker(
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }, [loadingBuffer]);
 

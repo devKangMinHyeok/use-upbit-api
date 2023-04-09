@@ -1,18 +1,40 @@
 // Test code
 import useWsOrderbook from '../../../src/hooks/useWsOrderbook';
 import * as React from 'react';
-import {useState} from 'react';
-
+import {useState, useEffect} from 'react';
 import {render, screen, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import {ImarketCodes} from '../../../src/interfaces';
+import ErrorBoundary from './ErrorBoundary';
 
-const TestOrderbookComponent = () => {
-  const [marketCode, _] = useState({
+const debugTest = false;
+
+const TestOrderbookComponent = ({
+  customMarketCode,
+  onError,
+}: {
+  customMarketCode?: unknown;
+  onError?: (error: Error) => void;
+}) => {
+  const [marketCode, setMarketCode] = useState<unknown>({
     market: 'KRW-BTC',
     korean_name: '비트코인',
     english_name: 'Bitcoin',
   });
-  const {isConnected, socketData} = useWsOrderbook(marketCode, {debug: true});
+
+  useEffect(() => {
+    if (customMarketCode) {
+      setMarketCode(() => customMarketCode);
+    }
+  }, [customMarketCode]);
+
+  const {isConnected, socketData} = useWsOrderbook(
+    marketCode as ImarketCodes,
+    {
+      debug: debugTest,
+    },
+    onError,
+  );
 
   return (
     <div>
@@ -31,24 +53,27 @@ const TestOrderbookComponent = () => {
 };
 
 describe('useWsOrderbook hook', () => {
-  it('renders connection status and received socket data', async () => {
+  // Test invalid targetMarketCodes
+  it('useWsOrderbook should throw error with invalid targetMarketCodes', () => {
+    const onError: jest.MockedFunction<(error: Error) => void> = jest.fn();
+    const invalidTargetMarketCodes = {
+      market: 'test_market',
+      korean_name: 'test_korean',
+    };
     // Render the TestOrderbookComponent
-    render(<TestOrderbookComponent />);
-
-    // Check if the connection status is displayed
-    const connectionStatus = screen.getByText(/Connected|Not Connected/i);
-    expect(connectionStatus).toBeInTheDocument();
-
-    // Wait for the socket data to be displayed
-    const socketDataList = await screen.findByTestId(
-      'socket-data',
-      {},
-      {timeout: 5000},
+    render(
+      <ErrorBoundary onError={onError}>
+        <TestOrderbookComponent
+          customMarketCode={invalidTargetMarketCodes}
+          onError={onError}
+        />
+      </ErrorBoundary>,
     );
 
-    // Check if the socket data is displayed
-    expect(socketDataList).toBeInTheDocument();
-    expect(socketDataList.children.length).toBeGreaterThan(0);
+    expect(onError).toHaveBeenCalled();
+    expect(onError.mock.calls[0][0].message).toBe(
+      'targetMarketCodes does not have the correct interface',
+    );
   });
 
   it('received socket data correctly', async () => {

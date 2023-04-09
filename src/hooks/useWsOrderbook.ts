@@ -3,6 +3,7 @@ import {useRef, useState, useCallback, useEffect} from 'react';
 import {throttle} from 'lodash';
 import getLastBuffers from '../functions/getLastBuffers';
 import socketDataEncoder from '../functions/socketDataEncoder';
+import isImarketCodes from '../functions/isImarketCodes';
 
 // extend extend OptionsInterface
 
@@ -17,6 +18,7 @@ import socketDataEncoder from '../functions/socketDataEncoder';
 function useWsOrderbook(
   targetMarketCodes: ImarketCodes,
   options: OBOptionsInterface = {},
+  onError?: (error: Error) => void,
 ) {
   const {throttle_time = 400, debug = false} = options;
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';
@@ -36,7 +38,7 @@ function useWsOrderbook(
         lastBuffers && setSocketData(lastBuffers[0]);
         buffer.current = [];
       } catch (error) {
-        throw new Error();
+        console.error(error);
       }
     }, throttle_time),
     [targetMarketCodes],
@@ -44,6 +46,12 @@ function useWsOrderbook(
   // socket 세팅
   useEffect(() => {
     try {
+      if (!isImarketCodes(targetMarketCodes)) {
+        throw new Error(
+          'targetMarketCodes does not have the correct interface',
+        );
+      }
+
       if ([targetMarketCodes].length > 0 && !socket.current) {
         socket.current = new WebSocket(SOCKET_URL);
         socket.current.binaryType = 'arraybuffer';
@@ -100,7 +108,14 @@ function useWsOrderbook(
         }
       };
     } catch (error) {
-      throw new Error();
+      if (error instanceof Error) {
+        if (onError) {
+          onError(error);
+        } else {
+          console.error(error);
+          throw error;
+        }
+      }
     }
   }, [targetMarketCodes]);
 

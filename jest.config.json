@@ -2,9 +2,9 @@
   "clearMocks": true,
   "verbose": true,
   "collectCoverage": true,
-  "modulePathIgnorePatterns": ["dist"],
-  "moduleNameMapper": {
-    "@root(.*)$": "<rootDir>/$1",
-    "@src(.*)$": "<rootDir>/src$1"
-  }
+  "modulePathIgnorePatterns": ["lib"],
+  "setupFilesAfterEnv": ["./jest.setup.ts"],
+  "preset": "ts-jest",
+  "testEnvironment": "jsdom",
+  "testMatch": ["**/__test__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"]
 }

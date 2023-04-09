@@ -2,7 +2,8 @@
   "compilerOptions": {
     "module": "CommonJS",
     "allowJs": true,
-    "target": "ES5",
+    "jsx": "react",
+    "target": "ES2015",
     "declaration": true,
     "outDir": "./lib",
     "rootDir": "./",
@@ -17,6 +18,13 @@
       "@src/*": ["src/*"]
     }
   },
-  "include": ["./src/**/*.ts", "./test/**/*.ts"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "test/**/*.ts",
+    "test/**/*.tsx",
+    "jest.setup.ts",
+    "index.ts"
+  ],
   "exclude": ["node_modules", "lib", ".github"]
 }

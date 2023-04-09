@@ -83,20 +83,16 @@ describe('useWsOrderbook hook', () => {
       const firstUnit = orderbookUnits[0];
 
       if (firstUnit.textContent) {
-        console.log('firstUnit.textContent: ', firstUnit.textContent);
         const askPriceMatch = firstUnit.textContent.match(
           /Ask Price: (\d+\.?\d+)/,
         );
 
         const askSizeMatch =
           firstUnit.textContent.match(/Ask Size: (\d+\.\d+)/);
-        console.log('askPriceMatch: ', askPriceMatch);
-        console.log('askSizeMatch: ', askSizeMatch);
+
         if (askPriceMatch && askSizeMatch) {
           const askPrice = parseFloat(askPriceMatch[1]);
           const askSize = parseFloat(askSizeMatch[1]);
-          console.log('askPrice: ', askPrice);
-          console.log('askSize: ', askSize);
 
           expect(askPrice).toBeGreaterThan(0);
           expect(askSize).toBeGreaterThan(0);

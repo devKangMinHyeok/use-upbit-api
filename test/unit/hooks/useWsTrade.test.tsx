@@ -83,19 +83,15 @@ describe('useWsTrade hook', () => {
       const firstTradeData = tradeDataItems[0];
 
       if (firstTradeData.textContent) {
-        console.log('firstTradeData.textContent: ', firstTradeData.textContent);
         const priceMatch =
           firstTradeData.textContent.match(/Price: (\d+\.?\d+)/);
 
         const volumeMatch =
           firstTradeData.textContent.match(/Volume: (\d+\.\d+)/);
-        console.log('priceMatch: ', priceMatch);
-        console.log('volumeMatch: ', volumeMatch);
+
         if (priceMatch && volumeMatch) {
           const price = parseFloat(priceMatch[1]);
           const volume = parseFloat(volumeMatch[1]);
-          console.log('price: ', price);
-          console.log('volume: ', volume);
 
           expect(price).toBeGreaterThan(0);
           expect(volume).toBeGreaterThan(0);

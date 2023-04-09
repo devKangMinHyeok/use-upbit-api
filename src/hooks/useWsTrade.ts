@@ -17,8 +17,8 @@ import isImarketCodes from '../functions/isImarketCodes';
  */
 function useWsTrade(
   targetMarketCodes: ImarketCodes,
-  options: TROptionsInterface = {},
   onError?: (error: Error) => void,
+  options: TROptionsInterface = {},
 ) {
   const {throttle_time = 400, max_length_queue = 100, debug = false} = options;
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';

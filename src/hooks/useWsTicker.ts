@@ -17,8 +17,8 @@ import isArrayOfImarketCodes from '../functions/isArrayOfImarketCodes';
  */
 function useWsTicker(
   targetMarketCodes: ImarketCodes[],
-  options: TKOptionsInterface = {},
   onError?: (error: Error) => void,
+  options: TKOptionsInterface = {},
 ) {
   const {throttle_time = 400, debug = false} = options;
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';

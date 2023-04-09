@@ -30,10 +30,10 @@ const TestOrderbookComponent = ({
 
   const {isConnected, socketData} = useWsOrderbook(
     marketCode as ImarketCodes,
+    onError,
     {
       debug: debugTest,
     },
-    onError,
   );
 
   return (

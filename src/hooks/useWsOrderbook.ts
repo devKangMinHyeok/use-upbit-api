@@ -17,8 +17,8 @@ import isImarketCodes from '../functions/isImarketCodes';
  */
 function useWsOrderbook(
   targetMarketCodes: ImarketCodes,
-  options: OBOptionsInterface = {},
   onError?: (error: Error) => void,
+  options: OBOptionsInterface = {},
 ) {
   const {throttle_time = 400, debug = false} = options;
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';

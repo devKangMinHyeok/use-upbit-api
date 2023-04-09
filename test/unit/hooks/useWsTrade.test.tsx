@@ -32,10 +32,10 @@ const TestTradeComponent = ({
 
   const {isConnected, socketData} = useWsTrade(
     marketCode as ImarketCodes,
+    onError,
     {
       debug: debugTest,
     },
-    onError,
   );
 
   return (

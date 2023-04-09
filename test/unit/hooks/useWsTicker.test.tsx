@@ -33,10 +33,10 @@ const TestTickerComponent = ({
 
   const {isConnected, socketData} = useWsTicker(
     marketCode as ImarketCodes[],
+    onError,
     {
       debug: debugTest,
     },
-    onError,
   );
 
   return (

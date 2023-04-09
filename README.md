@@ -51,9 +51,15 @@ const {isLoading, marketCodes} = useFetchMarketCode(
 );
 ```
 
-## CAUTIONs IN HOOKS
+---
 
-⚠️ targetMarketCode should be state in react (useState, ...), if not, unexpectable error can occur.
+## ⚠️ CAUTIONs IN WEBSOCKET API
+
+targetMarketCode should be state in react (useState, ...), if not, unexpectable error can occur.
+
+Do not use just constant or variable.
+
+---
 
 ## useWsTicker
 
@@ -71,6 +77,7 @@ const [targetMarketCode, _] = useState([
 
 const {socket, isConnected, socketData} = useWsTicker(
   targetMarketCode, // should be array
+  onError, // onError?: (error: Error) => void // optional, user for using ErrorBoundary
   (options = {throttle_time: 400, debug: false}), // default option, can be modified.
 );
 ```
@@ -88,6 +95,7 @@ const [targetMarketCode, _] = useState({
 
 const {socket, isConnected, socketData} = useWsOrderbook(
   targetMarketCode, // should be above form object
+  onError, // onError?: (error: Error) => void // optional, user for using ErrorBoundary
   (options = {throttle_time: 400, debug: false}), // default option, can be modified.
 );
 ```
@@ -106,9 +114,12 @@ const [targetMarketCode, _] = useState({
 
 const {socket, isConnected, socketData} = useWsTrade(
   targetMarketCode, // should be above form object
+  onError, // onError?: (error: Error) => void // optional, user for using ErrorBoundary
   (options = {throttle_time: 400, max_length_queue: 100, debug: false}), // default option, can be modified.
 );
 ```
+
+---
 
 ## Contributing
 

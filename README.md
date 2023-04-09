@@ -17,13 +17,9 @@
 
 ![TOTALEXAMPLE](https://user-images.githubusercontent.com/44657722/183570075-cb54905c-a57c-44a6-96c3-3d66dccef054.gif)
 
----
-
 ## Install
 
     npm install --save use-upbit-api
-
----
 
 ## Hooks
 
@@ -39,8 +35,6 @@
 
 [useWsTrade](#usewstrade)
 
----
-
 ## useFetchMarketCode
 
 useFetchMarketCode hook is used to fetch market codes from upbit api
@@ -51,15 +45,11 @@ const {isLoading, marketCodes} = useFetchMarketCode(
 );
 ```
 
----
-
 ## ⚠️ CAUTIONs IN WEBSOCKET API
 
 targetMarketCode should be state in react (useState, ...), if not, unexpectable error can occur.
 
 Do not use just constant or variable.
-
----
 
 ## useWsTicker
 
@@ -118,8 +108,6 @@ const {socket, isConnected, socketData} = useWsTrade(
   (options = {throttle_time: 400, max_length_queue: 100, debug: false}), // default option, can be modified.
 );
 ```
-
----
 
 ## Contributing
 

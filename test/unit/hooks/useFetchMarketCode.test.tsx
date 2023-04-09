@@ -8,8 +8,10 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
+const debugTest = false;
+
 const TestFetchMarketCodeComponent = () => {
-  const {isLoading, marketCodes} = useFetchMarketCode({debug: true});
+  const {isLoading, marketCodes} = useFetchMarketCode({debug: debugTest});
 
   return (
     <div>

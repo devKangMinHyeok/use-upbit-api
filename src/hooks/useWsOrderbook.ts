@@ -1,8 +1,11 @@
-import {IOrderbook, ImarketCodes} from '../interfaces';
+import {IOrderbook, ImarketCodes, OBOptionsInterface} from '../interfaces';
 import {useRef, useState, useCallback, useEffect} from 'react';
 import {throttle} from 'lodash';
 import getLastBuffers from '../functions/getLastBuffers';
 import socketDataEncoder from '../functions/socketDataEncoder';
+import isImarketCodes from '../functions/isImarketCodes';
+
+// extend extend OptionsInterface
 
 /**
  * useWsOrderbook is a custom hook that connects to a WebSocket API
@@ -13,11 +16,12 @@ import socketDataEncoder from '../functions/socketDataEncoder';
  * @returns Object with the WebSocket object, connection status, and real-time orderbook data.
  */
 function useWsOrderbook(
-  targetMarketCodes: ImarketCodes[],
-  options = {throttle_time: 400, debug: false},
+  targetMarketCodes: ImarketCodes,
+  onError?: (error: Error) => void,
+  options: OBOptionsInterface = {},
 ) {
+  const {throttle_time = 400, debug = false} = options;
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';
-  const {throttle_time} = options;
   const socket = useRef<WebSocket | null>(null);
   const buffer = useRef<IOrderbook[]>([]);
 
@@ -29,12 +33,12 @@ function useWsOrderbook(
       try {
         const lastBuffers = getLastBuffers(
           buffer.current,
-          targetMarketCodes.length,
+          [targetMarketCodes].length,
         );
         lastBuffers && setSocketData(lastBuffers[0]);
         buffer.current = [];
       } catch (error) {
-        throw new Error();
+        console.error(error);
       }
     }, throttle_time),
     [targetMarketCodes],
@@ -42,19 +46,19 @@ function useWsOrderbook(
   // socket 세팅
   useEffect(() => {
     try {
-      if (targetMarketCodes.length > 1) {
+      if (!isImarketCodes(targetMarketCodes)) {
         throw new Error(
-          "[Error] | 'Length' of Target Market Codes should be only 'one' in 'orderbook' and 'trade'. you can request only 1 marketcode's data, when you want to get 'orderbook' or 'trade' data.",
+          'targetMarketCodes does not have the correct interface',
         );
       }
 
-      if (targetMarketCodes.length > 0 && !socket.current) {
+      if ([targetMarketCodes].length > 0 && !socket.current) {
         socket.current = new WebSocket(SOCKET_URL);
         socket.current.binaryType = 'arraybuffer';
 
         const socketOpenHandler = () => {
           setIsConnected(true);
-          if (options.debug)
+          if (debug)
             console.log(
               '[completed connect] | socket Open Type: ',
               'orderbook',
@@ -64,11 +68,11 @@ function useWsOrderbook(
               {ticket: 'test'},
               {
                 type: 'orderbook',
-                codes: targetMarketCodes.map(code => code.market),
+                codes: [targetMarketCodes.market],
               },
             ];
             socket.current.send(JSON.stringify(sendContent));
-            if (options.debug) console.log('message sending done');
+            if (debug) console.log('message sending done');
           }
         };
 
@@ -76,12 +80,12 @@ function useWsOrderbook(
           setIsConnected(false);
           setSocketData(undefined);
           buffer.current = [];
-          if (options.debug) console.log('connection closed');
+          if (debug) console.log('connection closed');
         };
 
         const socketErrorHandler = (event: Event) => {
           const error = (event as ErrorEvent).error as Error;
-          if (options.debug) console.error('[Error]', error);
+          if (debug) console.error('[Error]', error);
         };
 
         const socketMessageHandler = (evt: MessageEvent<ArrayBuffer>) => {
@@ -104,7 +108,14 @@ function useWsOrderbook(
         }
       };
     } catch (error) {
-      throw new Error();
+      if (error instanceof Error) {
+        if (onError) {
+          onError(error);
+        } else {
+          console.error(error);
+          throw error;
+        }
+      }
     }
   }, [targetMarketCodes]);
 

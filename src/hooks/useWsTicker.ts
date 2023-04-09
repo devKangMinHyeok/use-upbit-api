@@ -1,10 +1,11 @@
-import {ITicker, ImarketCodes} from '../interfaces';
+import {ITicker, ImarketCodes, TKOptionsInterface} from '../interfaces';
 import {useRef, useState, useCallback, useEffect} from 'react';
 import getLastBuffers from '../functions/getLastBuffers';
 import sortBuffers from '../functions/sortBuffers';
 import {throttle} from 'lodash';
 import socketDataEncoder from '../functions/socketDataEncoder';
 import updateSocketData from '../functions/updateSocketData';
+import isArrayOfImarketCodes from '../functions/isArrayOfImarketCodes';
 
 /**
  * useWsTicker is a custom hook that connects to a WebSocket API
@@ -16,10 +17,11 @@ import updateSocketData from '../functions/updateSocketData';
  */
 function useWsTicker(
   targetMarketCodes: ImarketCodes[],
-  options = {throttle_time: 400, debug: false},
+  onError?: (error: Error) => void,
+  options: TKOptionsInterface = {},
 ) {
+  const {throttle_time = 400, debug = false} = options;
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';
-  const {throttle_time} = options;
   const socket = useRef<WebSocket | null>(null);
   const buffer = useRef<ITicker[]>([]);
 
@@ -48,13 +50,18 @@ function useWsTicker(
   // socket 세팅
   useEffect(() => {
     try {
+      if (!isArrayOfImarketCodes(targetMarketCodes)) {
+        throw new Error(
+          'targetMarketCodes does not have the correct interface',
+        );
+      }
       if (targetMarketCodes.length > 0 && !socket.current) {
         socket.current = new WebSocket(SOCKET_URL);
         socket.current.binaryType = 'arraybuffer';
 
         const socketOpenHandler = () => {
           setIsConnected(true);
-          if (options.debug)
+          if (debug)
             console.log('[completed connect] | socket Open Type: ', 'ticker');
           if (socket.current?.readyState == 1) {
             const sendContent = [
@@ -65,7 +72,7 @@ function useWsTicker(
               },
             ];
             socket.current.send(JSON.stringify(sendContent));
-            if (options.debug) console.log('message sending done');
+            if (debug) console.log('message sending done');
           }
         };
 
@@ -74,7 +81,7 @@ function useWsTicker(
           setLoadingBuffer([]);
           setSocketData([]);
           buffer.current = [];
-          if (options.debug) console.log('connection closed');
+          if (debug) console.log('connection closed');
         };
 
         const socketErrorHandler = (event: Event) => {
@@ -104,7 +111,14 @@ function useWsTicker(
         }
       };
     } catch (error) {
-      throw new Error();
+      if (error instanceof Error) {
+        if (onError) {
+          onError(error);
+        } else {
+          console.error(error);
+          throw error;
+        }
+      }
     }
   }, [targetMarketCodes]);
 
@@ -121,7 +135,7 @@ function useWsTicker(
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }, [loadingBuffer]);
 

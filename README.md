@@ -44,7 +44,9 @@
 useFetchMarketCode hook is used to fetch market codes from upbit api
 
 ```tsx
-const {isLoading, marketCodes} = useFetchMarketCode();
+const {isLoading, marketCodes} = useFetchMarketCode(
+  (options = {throttle_time: 400, debug: false}), // default option, can be modified.
+);
 ```
 
 ## useWsTicker
@@ -52,11 +54,9 @@ const {isLoading, marketCodes} = useFetchMarketCode();
 useWsTicker is a custom hook that connects to a WebSocket API and retrieves real-time ticker data for a given market code.
 
 ```tsx
-const webSocketOptions = {throttle_time: 400};
-
 const {socket, isConnected, socketData} = useWsTicker(
   targetMarketCode,
-  webSocketOptions,
+  (options = {throttle_time: 400, debug: false}), // default option, can be modified.
 );
 ```
 
@@ -65,11 +65,9 @@ const {socket, isConnected, socketData} = useWsTicker(
 useWsOrderbook is a custom hook that connects to a WebSocket API and retrieves real-time order book data for a given market code.
 
 ```tsx
-const webSocketOptions = {throttle_time: 400};
-
 const {socket, isConnected, socketData} = useWsOrderbook(
   targetMarketCode,
-  webSocketOptions,
+  (options = {throttle_time: 400, debug: false}), // default option, can be modified.
 );
 ```
 
@@ -79,11 +77,9 @@ useWsTrade is a custom hook that connects to a WebSocket API
 and retrieves real-time trade data for a given market code.
 
 ```tsx
-const webSocketOptions = {throttle_time: 400, max_length_queue: 100};
-
 const {socket, isConnected, socketData} = useWsTrade(
   targetMarketCode,
-  webSocketOptions,
+  (options = {throttle_time: 400, max_length_queue: 100, debug: false}), // default option, can be modified.
 );
 ```
 

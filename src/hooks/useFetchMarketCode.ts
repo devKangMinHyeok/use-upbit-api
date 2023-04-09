@@ -5,7 +5,7 @@ import {useState, useEffect} from 'react';
  * useFetchMarketCode hook is used to fetch market codes from upbit api
  * @returns Object with the market codes and a loading state.
  */
-function useFetchMarketCode(): {
+function useFetchMarketCode(option = {debug: false}): {
   isLoading: boolean;
   marketCodes: ImarketCodes[];
 } {
@@ -16,18 +16,18 @@ function useFetchMarketCode(): {
 
   const fetchMarketCodes = async () => {
     try {
-      console.log('here2');
       const response = await fetch(REST_API_URL);
-      console.log('response : ', response);
+
       if (!response.ok) {
-        console.log('here3');
         throw new Error('Failed to fetch market codes');
       }
-      console.log('here4');
+
       const json = await response.text();
       const result = JSON.parse(json) as ImarketCodes[];
-      console.log('result : ', result);
       setMarketCodes(result);
+      if (option.debug) {
+        console.log('Market codes fetched:', result);
+      }
     } catch (error) {
       console.error('Error fetching market codes:', error);
     } finally {

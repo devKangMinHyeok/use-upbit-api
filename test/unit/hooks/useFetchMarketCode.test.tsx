@@ -9,7 +9,7 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 
 const TestFetchMarketCodeComponent = () => {
-  const {isLoading, marketCodes} = useFetchMarketCode();
+  const {isLoading, marketCodes} = useFetchMarketCode({debug: true});
 
   return (
     <div>

@@ -16,7 +16,7 @@ import updateSocketData from '../functions/updateSocketData';
  */
 function useWsTicker(
   targetMarketCodes: ImarketCodes[],
-  options = {throttle_time: 400},
+  options = {throttle_time: 400, debug: false},
 ) {
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';
   const {throttle_time} = options;
@@ -54,7 +54,8 @@ function useWsTicker(
 
         const socketOpenHandler = () => {
           setIsConnected(true);
-          console.log('[연결완료] | socket Open Type: ', 'ticker');
+          if (options.debug)
+            console.log('[completed connect] | socket Open Type: ', 'ticker');
           if (socket.current?.readyState == 1) {
             const sendContent = [
               {ticket: 'test'},
@@ -64,7 +65,7 @@ function useWsTicker(
               },
             ];
             socket.current.send(JSON.stringify(sendContent));
-            console.log('message sending done');
+            if (options.debug) console.log('message sending done');
           }
         };
 
@@ -73,7 +74,7 @@ function useWsTicker(
           setLoadingBuffer([]);
           setSocketData([]);
           buffer.current = [];
-          console.log('연결종료');
+          if (options.debug) console.log('connection closed');
         };
 
         const socketErrorHandler = (event: Event) => {

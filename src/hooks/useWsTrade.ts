@@ -16,7 +16,7 @@ import socketDataEncoder from '../functions/socketDataEncoder';
  */
 function useWsTrade(
   targetMarketCodes: ImarketCodes[],
-  options = {throttle_time: 400, max_length_queue: 100},
+  options = {throttle_time: 400, max_length_queue: 100, debug: false},
 ) {
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';
   const {throttle_time, max_length_queue} = options;
@@ -45,10 +45,9 @@ function useWsTrade(
   useEffect(() => {
     try {
       if (targetMarketCodes.length > 1) {
-        console.error(
+        throw new Error(
           "[Error] | 'Length' of Target Market Codes should be only 'one' in 'orderbook' and 'trade'. you can request only 1 marketcode's data, when you want to get 'orderbook' or 'trade' data.",
         );
-        throw new Error();
       }
 
       if (targetMarketCodes.length > 0 && !socket.current) {
@@ -57,7 +56,8 @@ function useWsTrade(
 
         const socketOpenHandler = () => {
           setIsConnected(true);
-          console.log('[연결완료] | socket Open Type: ', 'trade');
+          if (options.debug)
+            console.log('[completed connect] | socket Open Type: ', 'trade');
           if (socket.current?.readyState == 1) {
             const sendContent = [
               {ticket: 'test'},
@@ -67,7 +67,7 @@ function useWsTrade(
               },
             ];
             socket.current.send(JSON.stringify(sendContent));
-            console.log('message sending done');
+            if (options.debug) console.log('message sending done');
           }
         };
 
@@ -75,7 +75,7 @@ function useWsTrade(
           setIsConnected(false);
           setSocketData([]);
           buffer.current = [];
-          console.log('연결종료');
+          if (options.debug) console.log('connection closed');
         };
 
         const socketErrorHandler = (event: Event) => {

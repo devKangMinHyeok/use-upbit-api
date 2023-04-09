@@ -14,7 +14,7 @@ import socketDataEncoder from '../functions/socketDataEncoder';
  */
 function useWsOrderbook(
   targetMarketCodes: ImarketCodes[],
-  options = {throttle_time: 400},
+  options = {throttle_time: 400, debug: false},
 ) {
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';
   const {throttle_time} = options;
@@ -43,10 +43,9 @@ function useWsOrderbook(
   useEffect(() => {
     try {
       if (targetMarketCodes.length > 1) {
-        console.error(
+        throw new Error(
           "[Error] | 'Length' of Target Market Codes should be only 'one' in 'orderbook' and 'trade'. you can request only 1 marketcode's data, when you want to get 'orderbook' or 'trade' data.",
         );
-        throw new Error();
       }
 
       if (targetMarketCodes.length > 0 && !socket.current) {
@@ -55,6 +54,11 @@ function useWsOrderbook(
 
         const socketOpenHandler = () => {
           setIsConnected(true);
+          if (options.debug)
+            console.log(
+              '[completed connect] | socket Open Type: ',
+              'orderbook',
+            );
           if (socket.current?.readyState == 1) {
             const sendContent = [
               {ticket: 'test'},
@@ -64,7 +68,7 @@ function useWsOrderbook(
               },
             ];
             socket.current.send(JSON.stringify(sendContent));
-            console.log('message sending done');
+            if (options.debug) console.log('message sending done');
           }
         };
 
@@ -72,12 +76,12 @@ function useWsOrderbook(
           setIsConnected(false);
           setSocketData(undefined);
           buffer.current = [];
-          console.log('연결종료');
+          if (options.debug) console.log('connection closed');
         };
 
         const socketErrorHandler = (event: Event) => {
           const error = (event as ErrorEvent).error as Error;
-          console.error('[Error]', error);
+          if (options.debug) console.error('[Error]', error);
         };
 
         const socketMessageHandler = (evt: MessageEvent<ArrayBuffer>) => {

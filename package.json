@@ -10,7 +10,8 @@
     "lint": "./node_modules/.bin/eslint .",
     "test": "jest",
     "pre-test": "npm run build && npm run lint && npm run test",
-    "clear-jest": "jest --clearCache"
+    "clear-jest": "jest --clearCache",
+    "publish-npm": "npm run pre-test && npm publish"
   },
   "repository": {
     "type": "git",

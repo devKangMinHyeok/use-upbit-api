@@ -4,7 +4,7 @@ on:
   release:
     types: [created]
     branches:
-      - main
+      - master
 
 jobs:
   build:
@@ -57,12 +57,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: main
+          ref: master
 
-      - name: Merge main to realese
+      - name: Merge master to realese
         uses: devmasx/merge-branch@master
         with:
           type: now
-          from_branch: main
+          from_branch: master
           target_branch: release
           github_token: ${{ github.token }}

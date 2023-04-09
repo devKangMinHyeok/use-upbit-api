@@ -11,7 +11,7 @@
 
 [_Git Repository_ &rarr;](https://github.com/devKangMinHyeok/use-upbit-api)
 
-[_Coverage Status &rarr;](https://devkangminhyeok.github.io/use-upbit-api/)
+[_Coverage Status_ &rarr;](https://devkangminhyeok.github.io/use-upbit-api/)
 
 [_View Demo_ &rarr;](https://devkangminhyeok.github.io/React-Upbit-API-Example/total-example)
 

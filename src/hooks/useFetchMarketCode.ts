@@ -15,13 +15,18 @@ function useFetchMarketCode(): {
   const [marketCodes, setMarketCodes] = useState<ImarketCodes[]>([]);
 
   const fetchMarketCodes = async () => {
-    const response = await fetch(REST_API_URL);
-    if (!response.ok) {
-      throw new Error('Failed to fetch market codes');
-    }
-    const result = JSON.parse(await response.text()) as ImarketCodes[];
     try {
-      console.log(result);
+      console.log('here2');
+      const response = await fetch(REST_API_URL);
+      console.log('response : ', response);
+      if (!response.ok) {
+        console.log('here3');
+        throw new Error('Failed to fetch market codes');
+      }
+      console.log('here4');
+      const json = await response.text();
+      const result = JSON.parse(json) as ImarketCodes[];
+      console.log('result : ', result);
       setMarketCodes(result);
     } catch (error) {
       console.error('Error fetching market codes:', error);

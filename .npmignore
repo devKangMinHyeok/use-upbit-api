@@ -8,8 +8,8 @@ test/
 .gitignore
 .gitmessage.txt
 .prettierrc.json
-COMMIT_README.md
 babel.config.json
+COMMIT_README.md
 eslintrc.yml
 jest.config.json
 jest.setup.ts

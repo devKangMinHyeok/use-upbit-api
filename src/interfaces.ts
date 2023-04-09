@@ -98,3 +98,15 @@ export interface TradeInterface {
   isConnected: boolean;
   socketData: ITrade[];
 }
+
+export interface OptionsInterface {
+  debug?: boolean;
+}
+
+export interface OBOptionsInterface extends OptionsInterface {
+  throttle_time?: number;
+}
+export interface TROptionsInterface extends OptionsInterface {
+  throttle_time?: number;
+  max_length_queue?: number;
+}

@@ -7,14 +7,12 @@ import {render, screen, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 const TestOrderbookComponent = () => {
-  const [marketCode, _] = useState([
-    {
-      market: 'KRW-BTC',
-      korean_name: '비트코인',
-      english_name: 'Bitcoin',
-    },
-  ]);
-  const {isConnected, socketData} = useWsOrderbook(marketCode);
+  const [marketCode, _] = useState({
+    market: 'KRW-BTC',
+    korean_name: '비트코인',
+    english_name: 'Bitcoin',
+  });
+  const {isConnected, socketData} = useWsOrderbook(marketCode, {debug: true});
 
   return (
     <div>

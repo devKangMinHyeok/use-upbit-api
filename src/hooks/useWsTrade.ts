@@ -1,4 +1,4 @@
-import {ITrade, ImarketCodes} from '../interfaces';
+import {ITrade, ImarketCodes, TROptionsInterface} from '../interfaces';
 import {useRef, useState, useCallback, useEffect} from 'react';
 import {throttle} from 'lodash';
 
@@ -15,11 +15,11 @@ import socketDataEncoder from '../functions/socketDataEncoder';
  * @returns Object with the WebSocket object, connection status, and real-time trade data.
  */
 function useWsTrade(
-  targetMarketCodes: ImarketCodes[],
-  options = {throttle_time: 400, max_length_queue: 100, debug: false},
+  targetMarketCodes: ImarketCodes,
+  options: TROptionsInterface = {},
 ) {
+  const {throttle_time = 400, max_length_queue = 100, debug = false} = options;
   const SOCKET_URL = 'wss://api.upbit.com/websocket/v1';
-  const {throttle_time, max_length_queue} = options;
   const socket = useRef<WebSocket | null>(null);
   const buffer = useRef<ITrade[]>([]);
 
@@ -44,30 +44,24 @@ function useWsTrade(
   // socket 세팅
   useEffect(() => {
     try {
-      if (targetMarketCodes.length > 1) {
-        throw new Error(
-          "[Error] | 'Length' of Target Market Codes should be only 'one' in 'orderbook' and 'trade'. you can request only 1 marketcode's data, when you want to get 'orderbook' or 'trade' data.",
-        );
-      }
-
-      if (targetMarketCodes.length > 0 && !socket.current) {
+      if ([targetMarketCodes].length > 0 && !socket.current) {
         socket.current = new WebSocket(SOCKET_URL);
         socket.current.binaryType = 'arraybuffer';
 
         const socketOpenHandler = () => {
           setIsConnected(true);
-          if (options.debug)
+          if (debug)
             console.log('[completed connect] | socket Open Type: ', 'trade');
           if (socket.current?.readyState == 1) {
             const sendContent = [
               {ticket: 'test'},
               {
                 type: 'trade',
-                codes: targetMarketCodes.map(code => code.market),
+                codes: [targetMarketCodes.market],
               },
             ];
             socket.current.send(JSON.stringify(sendContent));
-            if (options.debug) console.log('message sending done');
+            if (debug) console.log('message sending done');
           }
         };
 
@@ -75,7 +69,7 @@ function useWsTrade(
           setIsConnected(false);
           setSocketData([]);
           buffer.current = [];
-          if (options.debug) console.log('connection closed');
+          if (debug) console.log('connection closed');
         };
 
         const socketErrorHandler = (event: Event) => {

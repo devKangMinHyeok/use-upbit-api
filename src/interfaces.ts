@@ -106,6 +106,10 @@ export interface OptionsInterface {
 export interface OBOptionsInterface extends OptionsInterface {
   throttle_time?: number;
 }
+export interface TKOptionsInterface extends OptionsInterface {
+  throttle_time?: number;
+}
+
 export interface TROptionsInterface extends OptionsInterface {
   throttle_time?: number;
   max_length_queue?: number;

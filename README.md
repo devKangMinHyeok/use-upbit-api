@@ -51,13 +51,26 @@ const {isLoading, marketCodes} = useFetchMarketCode(
 );
 ```
 
+## CAUTIONs IN HOOKS
+
+⚠️ targetMarketCode should be state in react (useState, ...), if not, unexpectable error can occur.
+
 ## useWsTicker
 
 useWsTicker is a custom hook that connects to a WebSocket API and retrieves real-time ticker data for a given market code.
 
 ```tsx
+const [targetMarketCode, _] = useState([
+  {
+    market: 'KRW-BTC',
+    korean_name: '비트코인',
+    english_name: 'Bitcoin',
+  },
+  ...
+]);
+
 const {socket, isConnected, socketData} = useWsTicker(
-  targetMarketCode,
+  targetMarketCode, // should be array
   (options = {throttle_time: 400, debug: false}), // default option, can be modified.
 );
 ```
@@ -67,8 +80,14 @@ const {socket, isConnected, socketData} = useWsTicker(
 useWsOrderbook is a custom hook that connects to a WebSocket API and retrieves real-time order book data for a given market code.
 
 ```tsx
+const [targetMarketCode, _] = useState({
+  market: 'KRW-BTC',
+  korean_name: '비트코인',
+  english_name: 'Bitcoin',
+});
+
 const {socket, isConnected, socketData} = useWsOrderbook(
-  targetMarketCode,
+  targetMarketCode, // should be above form object
   (options = {throttle_time: 400, debug: false}), // default option, can be modified.
 );
 ```
@@ -79,8 +98,14 @@ useWsTrade is a custom hook that connects to a WebSocket API
 and retrieves real-time trade data for a given market code.
 
 ```tsx
+const [targetMarketCode, _] = useState({
+  market: 'KRW-BTC',
+  korean_name: '비트코인',
+  english_name: 'Bitcoin',
+});
+
 const {socket, isConnected, socketData} = useWsTrade(
-  targetMarketCode,
+  targetMarketCode, // should be above form object
   (options = {throttle_time: 400, max_length_queue: 100, debug: false}), // default option, can be modified.
 );
 ```
@@ -90,17 +115,15 @@ const {socket, isConnected, socketData} = useWsTrade(
 Thank you for your interest in contributing to use-upbit-api. Before you begin writing code, it is important that you share your intention to contribute with the team, based on the type of contribution
 
 1. You want to **propose a new feature** and implement it.
-    - Post about your intended feature in an [issue](https://github.com/devKangMinHyeok/use-upbit-api/issues), then implement it.
-    - We suggest that the branch name that you implement is better to be {type}/{issue number}/{issue name}. ex) feature/118/githubAction, bugfix/120/typo
-    
+   - Post about your intended feature in an [issue](https://github.com/devKangMinHyeok/use-upbit-api/issues), then implement it.
+   - We suggest that the branch name that you implement is better to be {type}/{issue number}/{issue name}. ex) feature/118/githubAction, bugfix/120/typo
 2. You want to **implement a feature or bug-fix** for an outstanding issue.
-    - Search for your issue in the [Mips-simulator-js issue list](https://github.com/devKangMinHyeok/use-upbit-api/issues).
-    - Pick an issue and comment that you'd like to work on the feature or bug-fix.
-    - If you need more context on a particular issue, please ask and we shall provide.
-    
+   - Search for your issue in the [Mips-simulator-js issue list](https://github.com/devKangMinHyeok/use-upbit-api/issues).
+   - Pick an issue and comment that you'd like to work on the feature or bug-fix.
+   - If you need more context on a particular issue, please ask and we shall provide.
 3. **Open pull request**
-    - You implement and test your feature or bug-fix, please submit a Pull Request to [https://github.com/mipsSimulatorUNIST/simulator/pulls](https://github.com/devKangMinHyeok/use-upbit-api/pulls) with some test case.
-    - Once a pull request is accepted and CI is passing, there is nothing else you need to do. we will check and merge the PR for you.
+   - You implement and test your feature or bug-fix, please submit a Pull Request to [https://github.com/mipsSimulatorUNIST/simulator/pulls](https://github.com/devKangMinHyeok/use-upbit-api/pulls) with some test case.
+   - Once a pull request is accepted and CI is passing, there is nothing else you need to do. we will check and merge the PR for you.
 
 **_Always opening_** to join this project for developing this library.
 

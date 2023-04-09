@@ -13,7 +13,7 @@ const TestTickerComponentConnection = () => {
       english_name: 'Bitcoin',
     },
   ]);
-  const {isConnected, socketData} = useWsTicker(marketCode);
+  const {isConnected, socketData} = useWsTicker(marketCode, {debug: true});
 
   return (
     <div>

@@ -12,7 +12,7 @@ const TestTradeComponent = () => {
     korean_name: '비트코인',
     english_name: 'Bitcoin',
   });
-  const {isConnected, socketData} = useWsTrade(marketCode);
+  const {isConnected, socketData} = useWsTrade(marketCode, {debug: true});
 
   return (
     <div>

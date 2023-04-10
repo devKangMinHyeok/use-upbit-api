@@ -4,7 +4,7 @@ import {useState, useEffect} from 'react';
 
 import {render, screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-// import ErrorBoundary from './ErrorBoundary';
+import ErrorBoundary from './ErrorBoundary';
 import {ImarketCodes} from '../../../src/interfaces';
 
 const debugTest = false;
@@ -61,34 +61,34 @@ const TestTickerComponent = ({
 
 describe('useWsTicker hook', () => {
   // Test invalid targetMarketCodes
-  // it('useWsTicker should throw error with invalid targetMarketCodes', () => {
-  //   const onError: jest.MockedFunction<(error: Error) => void> = jest.fn();
-  //   const invalidTargetMarketCodes = [
-  //     {
-  //       market: 'KRW-BTC',
-  //       korean_name: '비트코인',
-  //       english_name: 'Bitcoin',
-  //     },
-  //     {
-  //       market: 'KRW-ETH',
-  //       korean_name: '이더리움',
-  //     },
-  //   ];
-  //   // Render the TestOrderbookComponent
-  //   render(
-  //     <ErrorBoundary onError={onError}>
-  //       <TestTickerComponent
-  //         customMarketCode={invalidTargetMarketCodes}
-  //         onError={onError}
-  //       />
-  //     </ErrorBoundary>,
-  //   );
+  it('useWsTicker should throw error with invalid targetMarketCodes', () => {
+    const onError: jest.MockedFunction<(error: Error) => void> = jest.fn();
+    const invalidTargetMarketCodes = [
+      {
+        market: 'KRW-BTC',
+        korean_name: '비트코인',
+        english_name: 'Bitcoin',
+      },
+      {
+        market: 'KRW-ETH',
+        korean_name: '이더리움',
+      },
+    ];
+    // Render the TestOrderbookComponent
+    render(
+      <ErrorBoundary onError={onError}>
+        <TestTickerComponent
+          customMarketCode={invalidTargetMarketCodes}
+          onError={onError}
+        />
+      </ErrorBoundary>,
+    );
 
-  //   expect(onError).toHaveBeenCalled();
-  //   expect(onError.mock.calls[0][0].message).toBe(
-  //     'targetMarketCodes does not have the correct interface',
-  //   );
-  // });
+    expect(onError).toHaveBeenCalled();
+    expect(onError.mock.calls[0][0].message).toBe(
+      'targetMarketCodes does not have the correct interface',
+    );
+  });
 
   it('renders connection status and received socket data', async () => {
     // Render the TestTickerComponent

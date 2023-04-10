@@ -43,7 +43,7 @@ useFetchMarketCode hook is used to fetch market codes from upbit api
 
 ```tsx
 const {isLoading, marketCodes} = useFetchMarketCode(
-  (options = {throttle_time: 400, debug: false}), // default option, can be modified.
+  (options = {debug: false}), // default option, can be modified.
 );
 ```
 

@@ -53,29 +53,6 @@ const TestOrderbookComponent = ({
 };
 
 describe('useWsOrderbook hook', () => {
-  // Test invalid targetMarketCodes
-  // it('useWsOrderbook should throw error with invalid targetMarketCodes', () => {
-  //   const onError: jest.MockedFunction<(error: Error) => void> = jest.fn();
-  //   const invalidTargetMarketCodes = {
-  //     market: 'test_market',
-  //     korean_name: 'test_korean',
-  //   };
-  //   // Render the TestOrderbookComponent
-  //   render(
-  //     <ErrorBoundary onError={onError}>
-  //       <TestOrderbookComponent
-  //         customMarketCode={invalidTargetMarketCodes}
-  //         onError={onError}
-  //       />
-  //     </ErrorBoundary>,
-  //   );
-
-  //   expect(onError).toHaveBeenCalled();
-  //   expect(onError.mock.calls[0][0].message).toBe(
-  //     'targetMarketCodes does not have the correct interface',
-  //   );
-  // });
-
   it('received socket data correctly', async () => {
     // Render the TestOrderbookComponent
     render(<TestOrderbookComponent />);

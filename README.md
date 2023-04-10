@@ -5,7 +5,11 @@
 ![version](https://img.shields.io/npm/v/use-upbit-api?style=plastic)
 ![types](https://img.shields.io/npm/types/use-upbit-api?style=plastic)
 
-**The use-upbit-api custom hook for Upbit API** (Korea crypto exchange). In the previous, Upbit API's Websocket usage in React is difficult for developer who is unfamiliar with websocket in React, but this React Custom Hook solve the problem. Let's use this awesome custom hooks!
+**The use-upbit-api, React custom hook for Upbit API** (Korea crypto exchange).
+
+In the previous, Upbit API's Websocket usage in React is difficult for developer who is unfamiliar with websocket in React, but this React Custom Hook solve the problem.
+
+Let's use this awesome custom hooks!
 
 [_npm_ &rarr;](https://www.npmjs.com/package/use-upbit-api)
 

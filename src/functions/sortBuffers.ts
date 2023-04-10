@@ -11,13 +11,6 @@ const sortBuffers = (
   const tickerMap: {[code: string]: ITicker} = {};
   buffers.forEach(ticker => (tickerMap[ticker.code] = ticker));
 
-  for (let i = 0; i < sortOrder.length; i++) {
-    const market = sortOrder[i].market;
-    if (!tickerMap[market]) {
-      return undefined;
-    }
-  }
-
   const result: ITicker[] = [];
   sortOrder.forEach(({market}) => {
     const ticker = tickerMap[market];

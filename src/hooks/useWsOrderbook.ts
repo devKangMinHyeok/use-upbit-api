@@ -1,5 +1,5 @@
 import {IOrderbook, ImarketCodes, OBOptionsInterface} from '../interfaces';
-import {useRef, useState, useCallback, useEffect} from 'react';
+import {useRef, useState, useEffect} from 'react';
 import {throttle} from 'lodash';
 import getLastBuffers from '../functions/getLastBuffers';
 import socketDataEncoder from '../functions/socketDataEncoder';
@@ -28,29 +28,27 @@ function useWsOrderbook(
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [socketData, setSocketData] = useState<IOrderbook>();
 
-  const throttled = useCallback(
-    throttle(() => {
-      try {
-        const lastBuffers = getLastBuffers(
-          buffer.current,
-          [targetMarketCodes].length,
-        );
-        lastBuffers && setSocketData(lastBuffers[0]);
-        buffer.current = [];
-      } catch (error) {
-        console.error(error);
-      }
-    }, throttle_time),
-    [targetMarketCodes],
-  );
+  const throttled = throttle(() => {
+    try {
+      const lastBuffers = getLastBuffers(
+        buffer.current,
+        [targetMarketCodes].length,
+      );
+      lastBuffers && setSocketData(lastBuffers[0]);
+      buffer.current = [];
+    } catch (error) {
+      console.error(error);
+    }
+  }, throttle_time);
+
   // socket 세팅
   useEffect(() => {
     try {
-      if (targetMarketCodes && !isImarketCodes(targetMarketCodes)) {
-        throw new Error(
-          'targetMarketCodes does not have the correct interface',
-        );
-      }
+      // if (targetMarketCodes && !isImarketCodes(targetMarketCodes)) {
+      //   throw new Error(
+      //     'targetMarketCodes does not have the correct interface',
+      //   );
+      // }
       if ([targetMarketCodes].length > 0 && !socket.current) {
         socket.current = new WebSocket(SOCKET_URL);
         socket.current.binaryType = 'arraybuffer';

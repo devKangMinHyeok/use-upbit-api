@@ -1,5 +1,5 @@
 import {ITicker, ImarketCodes, TKOptionsInterface} from '../interfaces';
-import {useRef, useState, useCallback, useEffect} from 'react';
+import {useRef, useState, useEffect} from 'react';
 import getLastBuffers from '../functions/getLastBuffers';
 import sortBuffers from '../functions/sortBuffers';
 import {throttle} from 'lodash';
@@ -29,35 +29,33 @@ function useWsTicker(
   const [loadingBuffer, setLoadingBuffer] = useState<ITicker[]>([]);
   const [socketData, setSocketData] = useState<ITicker[]>();
 
-  const throttled = useCallback(
-    throttle(() => {
-      try {
-        const lastBuffers = getLastBuffers(
-          buffer.current,
-          targetMarketCodes.length,
-        );
-        const sortedBuffers =
-          lastBuffers && sortBuffers(lastBuffers, targetMarketCodes);
-        sortedBuffers && setLoadingBuffer(sortedBuffers);
-        buffer.current = [];
-      } catch (error) {
-        console.error(error);
-        return;
-      }
-    }, throttle_time),
-    [targetMarketCodes],
-  );
+  const throttled = throttle(() => {
+    try {
+      const lastBuffers = getLastBuffers(
+        buffer.current,
+        targetMarketCodes.length,
+      );
+      const sortedBuffers =
+        lastBuffers && sortBuffers(lastBuffers, targetMarketCodes);
+      sortedBuffers && setLoadingBuffer(sortedBuffers);
+      buffer.current = [];
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+  }, throttle_time);
+
   // socket 세팅
   useEffect(() => {
     try {
-      if (
-        targetMarketCodes.length > 0 &&
-        !isArrayOfImarketCodes(targetMarketCodes)
-      ) {
-        throw new Error(
-          'targetMarketCodes does not have the correct interface',
-        );
-      }
+      // if (
+      //   targetMarketCodes.length > 0 &&
+      //   !isArrayOfImarketCodes(targetMarketCodes)
+      // ) {
+      //   throw new Error(
+      //     'targetMarketCodes does not have the correct interface',
+      //   );
+      // }
       if (targetMarketCodes.length > 0 && !socket.current) {
         socket.current = new WebSocket(SOCKET_URL);
         socket.current.binaryType = 'arraybuffer';

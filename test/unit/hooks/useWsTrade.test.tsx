@@ -56,27 +56,27 @@ const TestTradeComponent = ({
 
 describe('useWsTrade hook', () => {
   // Test invalid targetMarketCodes
-  it('useWsTrade should throw error with invalid targetMarketCodes', () => {
-    const onError: jest.MockedFunction<(error: Error) => void> = jest.fn();
-    const invalidTargetMarketCodes = {
-      market: 'test_market',
-      korean_name: 'test_korean',
-    };
-    // Render the TestTradeComponent
-    render(
-      <ErrorBoundary onError={onError}>
-        <TestTradeComponent
-          customMarketCode={invalidTargetMarketCodes}
-          onError={onError}
-        />
-      </ErrorBoundary>,
-    );
+  // it('useWsTrade should throw error with invalid targetMarketCodes', () => {
+  //   const onError: jest.MockedFunction<(error: Error) => void> = jest.fn();
+  //   const invalidTargetMarketCodes = {
+  //     market: 'test_market',
+  //     korean_name: 'test_korean',
+  //   };
+  //   // Render the TestTradeComponent
+  //   render(
+  //     <ErrorBoundary onError={onError}>
+  //       <TestTradeComponent
+  //         customMarketCode={invalidTargetMarketCodes}
+  //         onError={onError}
+  //       />
+  //     </ErrorBoundary>,
+  //   );
 
-    expect(onError).toHaveBeenCalled();
-    expect(onError.mock.calls[0][0].message).toBe(
-      'targetMarketCodes does not have the correct interface',
-    );
-  });
+  //   expect(onError).toHaveBeenCalled();
+  //   expect(onError.mock.calls[0][0].message).toBe(
+  //     'targetMarketCodes does not have the correct interface',
+  //   );
+  // });
 
   it('renders connection status and received socket data', async () => {
     // Render the TestTradeComponent

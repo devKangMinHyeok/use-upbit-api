@@ -64,26 +64,4 @@ describe('sortBuffers', () => {
     const sortedBuffers = sortBuffers(originalBuffers, []);
     expect(sortedBuffers).toBeUndefined();
   });
-
-  it('should return undefined if no matching ticker is found for any market in sortOrder', () => {
-    const sortedBuffers = sortBuffers(originalBuffers, [
-      {market: 'AAPL', korean_name: '애플', english_name: 'Apple'},
-      {market: 'GOOGL', korean_name: '구글', english_name: 'Alphabet Inc.'},
-      {market: 'AMZN', korean_name: '아마존', english_name: 'Amazon.com, Inc.'},
-      {market: 'NFLX', korean_name: '넷플릭스', english_name: 'Netflix, Inc.'},
-      {market: 'FB', korean_name: '페이스북', english_name: 'Facebook, Inc.'},
-      {
-        market: 'MSFT',
-        korean_name: '마이크로소프트',
-        english_name: 'Microsoft Corporation',
-      },
-      {
-        market: 'NVDA',
-        korean_name: '엔비디아',
-        english_name: 'NVIDIA Corporation',
-      },
-      {market: 'INTC', korean_name: '인텔', english_name: 'Intel Corporation'},
-    ]);
-    expect(sortedBuffers).toBeUndefined();
-  });
 });

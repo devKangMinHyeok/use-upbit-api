@@ -5,7 +5,7 @@ import sortBuffers from '../functions/sortBuffers';
 import {throttle} from 'lodash';
 import socketDataEncoder from '../functions/socketDataEncoder';
 import updateSocketData from '../functions/updateSocketData';
-import isArrayOfImarketCodes from '../functions/isArrayOfImarketCodes';
+// import isArrayOfImarketCodes from '../functions/isArrayOfImarketCodes';
 
 /**
  * useWsTicker is a custom hook that connects to a WebSocket API
@@ -27,7 +27,7 @@ function useWsTicker(
 
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [loadingBuffer, setLoadingBuffer] = useState<ITicker[]>([]);
-  const [socketData, setSocketData] = useState<ITicker[]>();
+  const [socketData, setSocketData] = useState<ITicker[] | null>(null);
 
   const throttled = throttle(() => {
     try {
@@ -35,8 +35,9 @@ function useWsTicker(
         buffer.current,
         targetMarketCodes.length,
       );
-      const sortedBuffers =
-        lastBuffers && sortBuffers(lastBuffers, targetMarketCodes);
+
+      const sortedBuffers = sortBuffers(lastBuffers, targetMarketCodes);
+
       sortedBuffers && setLoadingBuffer(sortedBuffers);
       buffer.current = [];
     } catch (error) {
@@ -80,7 +81,7 @@ function useWsTicker(
         const socketCloseHandler = () => {
           setIsConnected(false);
           setLoadingBuffer([]);
-          setSocketData([]);
+          setSocketData(null);
           buffer.current = [];
           if (debug) console.log('connection closed');
         };
@@ -92,10 +93,9 @@ function useWsTicker(
 
         const socketMessageHandler = (evt: MessageEvent<ArrayBuffer>) => {
           const data = socketDataEncoder<ITicker>(evt.data);
-          if (data) {
-            buffer.current.push(data);
-            throttled();
-          }
+          console.log('data:', data);
+          data && buffer.current.push(data);
+          throttled();
         };
 
         socket.current.onopen = socketOpenHandler;

@@ -1,5 +1,5 @@
 import {ITrade, ImarketCodes, TROptionsInterface} from '../interfaces';
-import {useRef, useState, useCallback, useEffect} from 'react';
+import {useRef, useState, useEffect} from 'react';
 import {throttle} from 'lodash';
 
 import updateQueueBuffer from '../functions/updateQueueBuffer';
@@ -41,11 +41,11 @@ function useWsTrade(
   // socket 세팅
   useEffect(() => {
     try {
-      // if (targetMarketCodes && !isImarketCodes(targetMarketCodes)) {
-      //   throw new Error(
-      //     'targetMarketCodes does not have the correct interface',
-      //   );
-      // }
+      if (targetMarketCodes && !isImarketCodes(targetMarketCodes)) {
+        throw new Error(
+          'targetMarketCodes does not have the correct interface',
+        );
+      }
       if ([targetMarketCodes].length > 0 && !socket.current) {
         socket.current = new WebSocket(SOCKET_URL);
         socket.current.binaryType = 'arraybuffer';

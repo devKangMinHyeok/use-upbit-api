@@ -117,11 +117,11 @@ Thank you for your interest in contributing to use-upbit-api. Before you begin w
    - Post about your intended feature in an [issue](https://github.com/devKangMinHyeok/use-upbit-api/issues), then implement it.
    - We suggest that the branch name that you implement is better to be {type}/{issue number}/{issue name}. ex) feature/118/githubAction, bugfix/120/typo
 2. You want to **implement a feature or bug-fix** for an outstanding issue.
-   - Search for your issue in the [Mips-simulator-js issue list](https://github.com/devKangMinHyeok/use-upbit-api/issues).
+   - Search for your issue in the [use-upbit-api issue list](https://github.com/devKangMinHyeok/use-upbit-api/issues).
    - Pick an issue and comment that you'd like to work on the feature or bug-fix.
    - If you need more context on a particular issue, please ask and we shall provide.
 3. **Open pull request**
-   - You implement and test your feature or bug-fix, please submit a Pull Request to [https://github.com/mipsSimulatorUNIST/simulator/pulls](https://github.com/devKangMinHyeok/use-upbit-api/pulls) with some test case.
+   - You implement and test your feature or bug-fix, please submit a Pull Request to [use-upbit-api PR](https://github.com/devKangMinHyeok/use-upbit-api/pulls) with some test case.
    - Once a pull request is accepted and CI is passing, there is nothing else you need to do. we will check and merge the PR for you.
 
 **_Always opening_** to join this project for developing this library.

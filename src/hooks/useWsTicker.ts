@@ -49,14 +49,14 @@ function useWsTicker(
   // socket 세팅
   useEffect(() => {
     try {
-      if (
-        targetMarketCodes.length > 0 &&
-        !isArrayOfImarketCodes(targetMarketCodes)
-      ) {
-        throw new Error(
-          'targetMarketCodes does not have the correct interface',
-        );
-      }
+      // if (
+      //   targetMarketCodes.length > 0 &&
+      //   !isArrayOfImarketCodes(targetMarketCodes)
+      // ) {
+      //   throw new Error(
+      //     'targetMarketCodes does not have the correct interface',
+      //   );
+      // }
       if (targetMarketCodes.length > 0 && !socket.current) {
         socket.current = new WebSocket(SOCKET_URL);
         socket.current.binaryType = 'arraybuffer';
@@ -93,7 +93,7 @@ function useWsTicker(
 
         const socketMessageHandler = (evt: MessageEvent<ArrayBuffer>) => {
           const data = socketDataEncoder<ITicker>(evt.data);
-          console.log('data:', data);
+          if (debug) console.log('data:', data);
           data && buffer.current.push(data);
           throttled();
         };

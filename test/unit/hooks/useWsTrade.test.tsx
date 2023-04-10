@@ -7,7 +7,7 @@ import {render, screen, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {useEffect} from 'react';
 import {ImarketCodes} from '../../../src/interfaces';
-import ErrorBoundary from './ErrorBoundary';
+// import ErrorBoundary from './ErrorBoundary';
 
 const debugTest = false;
 

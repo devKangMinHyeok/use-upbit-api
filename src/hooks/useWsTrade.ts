@@ -46,7 +46,7 @@ function useWsTrade(
   // socket 세팅
   useEffect(() => {
     try {
-      if (!isImarketCodes(targetMarketCodes)) {
+      if (targetMarketCodes && !isImarketCodes(targetMarketCodes)) {
         throw new Error(
           'targetMarketCodes does not have the correct interface',
         );

@@ -50,7 +50,10 @@ function useWsTicker(
   // socket 세팅
   useEffect(() => {
     try {
-      if (!isArrayOfImarketCodes(targetMarketCodes)) {
+      if (
+        targetMarketCodes.length > 0 &&
+        !isArrayOfImarketCodes(targetMarketCodes)
+      ) {
         throw new Error(
           'targetMarketCodes does not have the correct interface',
         );

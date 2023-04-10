@@ -28,29 +28,24 @@ function useWsTrade(
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [socketData, setSocketData] = useState<ITrade[]>();
 
-  const throttled = useCallback(
-    throttle(() => {
-      try {
-        const updatedBuffer = updateQueueBuffer(
-          buffer.current,
-          max_length_queue,
-        );
-        buffer.current = updatedBuffer;
-        setSocketData(updatedBuffer);
-      } catch (error) {
-        console.error(error);
-      }
-    }, throttle_time),
-    [targetMarketCodes],
-  );
+  const throttled = throttle(() => {
+    try {
+      const updatedBuffer = updateQueueBuffer(buffer.current, max_length_queue);
+      buffer.current = updatedBuffer;
+      setSocketData(updatedBuffer);
+    } catch (error) {
+      console.error(error);
+    }
+  }, throttle_time);
+
   // socket 세팅
   useEffect(() => {
     try {
-      if (targetMarketCodes && !isImarketCodes(targetMarketCodes)) {
-        throw new Error(
-          'targetMarketCodes does not have the correct interface',
-        );
-      }
+      // if (targetMarketCodes && !isImarketCodes(targetMarketCodes)) {
+      //   throw new Error(
+      //     'targetMarketCodes does not have the correct interface',
+      //   );
+      // }
       if ([targetMarketCodes].length > 0 && !socket.current) {
         socket.current = new WebSocket(SOCKET_URL);
         socket.current.binaryType = 'arraybuffer';

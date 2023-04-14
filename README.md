@@ -46,9 +46,15 @@ Let's use this awesome custom hooks!
 useFetchMarketCode hook is used to fetch market codes from upbit api
 
 ```tsx
-const {isLoading, marketCodes} = useFetchMarketCode(
-  (options = {debug: false}), // default option, can be modified.
-);
+import {useFetchMarketCode} from 'use-upbit-api';
+
+function Component() {
+  const {isLoading, marketCodes} = useFetchMarketCode(
+    (options = {debug: false}), // default option, can be modified.
+  );
+
+  //...
+}
 ```
 
 ## ⚠️ CAUTIONs IN WEBSOCKET API
@@ -62,20 +68,28 @@ Do not use just constant or variable.
 useWsTicker is a custom hook that connects to a WebSocket API and retrieves real-time ticker data for a given market code.
 
 ```tsx
-const [targetMarketCode, _] = useState([
-  {
-    market: 'KRW-BTC',
-    korean_name: '비트코인',
-    english_name: 'Bitcoin',
-  },
-  ...
-]);
+import { useWsTicker } from "use-upbit-api";
 
-const {socket, isConnected, socketData} = useWsTicker(
-  targetMarketCode, // should be array
-  onError, // onError?: (error: Error) => void // optional, user for using ErrorBoundary
-  (options = {throttle_time: 400, debug: false}), // default option, can be modified.
-);
+function Component() {
+  const [targetMarketCode, _] = useState([
+    {
+      market: 'KRW-BTC',
+      korean_name: '비트코인',
+      english_name: 'Bitcoin',
+    },
+    ...
+  ]);
+
+  const {socket, isConnected, socketData} = useWsTicker(
+    targetMarketCode, // should be array
+    onError, // onError?: (error: Error) => void // optional, user for using ErrorBoundary
+    (options = {throttle_time: 400, debug: false}), // default option, can be modified.
+  );
+
+  // ...
+}
+
+
 ```
 
 ## useWsOrderbook
@@ -83,17 +97,23 @@ const {socket, isConnected, socketData} = useWsTicker(
 useWsOrderbook is a custom hook that connects to a WebSocket API and retrieves real-time order book data for a given market code.
 
 ```tsx
-const [targetMarketCode, _] = useState({
-  market: 'KRW-BTC',
-  korean_name: '비트코인',
-  english_name: 'Bitcoin',
-});
+import {useWsOrderbook} from 'use-upbit-api';
 
-const {socket, isConnected, socketData} = useWsOrderbook(
-  targetMarketCode, // should be above form object
-  onError, // onError?: (error: Error) => void // optional, user for using ErrorBoundary
-  (options = {throttle_time: 400, debug: false}), // default option, can be modified.
-);
+function Component() {
+  const [targetMarketCode, _] = useState({
+    market: 'KRW-BTC',
+    korean_name: '비트코인',
+    english_name: 'Bitcoin',
+  });
+
+  const {socket, isConnected, socketData} = useWsOrderbook(
+    targetMarketCode, // should be above form object
+    onError, // onError?: (error: Error) => void // optional, user for using ErrorBoundary
+    (options = {throttle_time: 400, debug: false}), // default option, can be modified.
+  );
+
+  // ...
+}
 ```
 
 ## useWsTrade
@@ -102,17 +122,23 @@ useWsTrade is a custom hook that connects to a WebSocket API
 and retrieves real-time trade data for a given market code.
 
 ```tsx
-const [targetMarketCode, _] = useState({
-  market: 'KRW-BTC',
-  korean_name: '비트코인',
-  english_name: 'Bitcoin',
-});
+import {useWsTrade} from 'use-upbit-api';
 
-const {socket, isConnected, socketData} = useWsTrade(
-  targetMarketCode, // should be above form object
-  onError, // onError?: (error: Error) => void // optional, user for using ErrorBoundary
-  (options = {throttle_time: 400, max_length_queue: 100, debug: false}), // default option, can be modified.
-);
+function Component() {
+  const [targetMarketCode, _] = useState({
+    market: 'KRW-BTC',
+    korean_name: '비트코인',
+    english_name: 'Bitcoin',
+  });
+
+  const {socket, isConnected, socketData} = useWsTrade(
+    targetMarketCode, // should be above form object
+    onError, // onError?: (error: Error) => void // optional, user for using ErrorBoundary
+    (options = {throttle_time: 400, max_length_queue: 100, debug: false}), // default option, can be modified.
+  );
+
+  // ...
+}
 ```
 
 ## Contributing

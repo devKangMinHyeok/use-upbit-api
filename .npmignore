@@ -3,6 +3,7 @@ src/
 ts-develop/
 coverage/
 .github/
+draws/
 test/
 .eslintrc.json
 .gitignore

@@ -115,6 +115,12 @@ const {socket, isConnected, socketData} = useWsTrade(
 );
 ```
 
+## Flow
+
+### API Flow
+
+### Websocket Hook Flow
+
 ## Contributing
 
 Thank you for your interest in contributing to use-upbit-api. Before you begin writing code, it is important that you share your intention to contribute with the team, based on the type of contribution

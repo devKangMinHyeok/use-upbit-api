@@ -118,8 +118,11 @@ const {socket, isConnected, socketData} = useWsTrade(
 ## Flow
 
 ### API Flow
+![api_flow](https://user-images.githubusercontent.com/44657722/232290272-75ff747a-0b96-4a12-b85b-1a8b57247f9e.png)
 
 ### Websocket Hook Flow
+![ws_logic_flow](https://user-images.githubusercontent.com/44657722/232290395-31fef232-fdb7-4e0b-91ce-01693a68cb7f.png)
+
 
 ## Contributing
 

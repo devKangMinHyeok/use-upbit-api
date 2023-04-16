@@ -141,6 +141,15 @@ function Component() {
 }
 ```
 
+## Flow
+
+### API Flow
+![api_flow](https://user-images.githubusercontent.com/44657722/232290272-75ff747a-0b96-4a12-b85b-1a8b57247f9e.png)
+
+### Websocket Hook Flow
+![ws_logic_flow](https://user-images.githubusercontent.com/44657722/232290395-31fef232-fdb7-4e0b-91ce-01693a68cb7f.png)
+
+
 ## Contributing
 
 Thank you for your interest in contributing to use-upbit-api. Before you begin writing code, it is important that you share your intention to contribute with the team, based on the type of contribution
